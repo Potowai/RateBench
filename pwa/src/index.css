@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset mobile viewport & smooth scrolling */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+/* Custom leaflet marker pin animations */
+.custom-bench-pin {
+  background: transparent;
+  border: none;
+}
+
+.user-loc-pin {
+  background: transparent;
+  border: none;
+}

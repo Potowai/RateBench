@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Rate Bench Map</title>
+    <link rel="stylesheet" href="leaflet.css" />
+    <script src="leaflet.js"></script>
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #f1f5f9;
+        }
+        .bench-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            border: 2.5px solid #ffffff;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.45);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: transform 0.12s ease-out;
+        }
+        .bench-pill:active {
+            transform: scale(1.12);
+            background: #000000;
+        }
+        .bench-pill .star {
+            color: #f59e0b;
+            font-size: 14px;
+        }
+        .user-marker {
+            width: 26px;
+            height: 26px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .user-dot {
+            width: 14px;
+            height: 14px;
+            background: #2563eb;
+            border: 2.5px solid #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.9);
+            z-index: 2;
+        }
+        .user-halo {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.35);
+            animation: pulse-ring 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.6); opacity: 1; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        .leaflet-control-attribution {
+            font-size: 9px !important;
+            background: rgba(255, 255, 255, 0.85) !important;
+            padding: 2px 6px !important;
+            border-radius: 4px;
+            margin: 6px !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map', {
+            zoomControl: false,
+            attributionControl: true,
+            maxZoom: 19,
+            minZoom: 4
+        }).setView([48.8575, 2.3514], 15);
+
+        // Tuiles OpenStreetMap officielles 100% gratuites sans clé API requise
+        var tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            minZoom: 3,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // En cas de secours, basculer sur le miroir OpenStreetMap France
+        tileLayer.on('tileerror', function(e) {
+            console.warn('Fallback vers miroir OSM France');
+            var osmFr = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                subdomains: 'abc',
+                attribution: '&copy; OpenStreetMap France'
+            });
+            osmFr.addTo(map);
+        });
+
+        var benchesLayer = L.layerGroup().addTo(map);
+        var userMarker = null;
+
+        function setUserLocation(lat, lng) {
+            if (userMarker) {
+                userMarker.setLatLng([lat, lng]);
+            } else {
+                var icon = L.divIcon({
+                    className: 'user-icon-container',
+                    html: '<div class="user-marker"><div class="user-halo"></div><div class="user-dot"></div></div>',
+                    iconSize: [26, 26],
+                    iconAnchor: [13, 13]
+                });
+                userMarker = L.marker([lat, lng], { icon: icon, zIndexOffset: 1000 }).addTo(map);
+            }
+        }
+
+        function setBenches(jsonString) {
+            benchesLayer.clearLayers();
+            try {
+                var benches = typeof jsonString === 'string' ? JSON.parse(jsonString) : jsonString;
+                benches.forEach(function(b) {
+                    var ratingFormatted = (b.rating > 0 ? Number(b.rating).toFixed(1) : '—');
+                    var icon = L.divIcon({
+                        className: 'bench-marker-wrapper',
+                        html: '<div class="bench-pill" onclick="window.Android && window.Android.onBenchClicked(\'' + b.id + '\')">' +
+                              '<span class="star">★</span>' +
+                              '<span>' + ratingFormatted + '</span>' +
+                              '</div>',
+                        iconSize: [66, 36],
+                        iconAnchor: [33, 18]
+                    });
+
+                    var marker = L.marker([b.latitude, b.longitude], { icon: icon });
+                    marker.on('click', function() {
+                        if (window.Android) {
+                            window.Android.onBenchClicked(b.id);
+                        }
+                    });
+                    benchesLayer.addLayer(marker);
+                });
+            } catch(e) {
+                console.error("Erreur parsing benches:", e);
+            }
+        }
+
+        function centerMap(lat, lng, zoom) {
+            map.flyTo([lat, lng], zoom || 16, { duration: 0.8 });
+        }
+
+        map.on('click', function(e) {
+            if (window.Android) {
+                window.Android.onMapClicked(e.latlng.lat, e.latlng.lng);
+            }
+        });
+
+        function notifyReady() {
+            if (window.Android && window.Android.onMapReady) {
+                window.Android.onMapReady();
+            }
+        }
+
+        setTimeout(notifyReady, 50);
+        window.addEventListener('load', notifyReady);
+    </script>
+</body>
+</html>
