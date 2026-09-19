@@ -1,14 +1,17 @@
 package com.example.ui.components
 
 import android.Manifest
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -164,18 +167,24 @@ private fun markVideoReady(context: Context, uri: Uri) {
 }
 
 /**
- * Déclencheur de capture vidéo en direct (appli caméra externe).
+ * Déclencheur de capture vidéo en direct (appli caméra externe via
+ * ACTION_VIDEO_CAPTURE + URI MediaStore, compatible tous niveaux d'API).
  * Gère WRITE_EXTERNAL_STORAGE sur Android < 10.
  */
 @Composable
 fun rememberVideoCapture(onCaptured: (String) -> Unit): () -> Unit {
   val context = LocalContext.current
   var pendingUri by remember { androidx.compose.runtime.mutableStateOf<Uri?>(null) }
+  fun launchCapture(uri: Uri, launcher: ManagedActivityResultLauncher<Intent, androidx.activity.result.ActivityResult>) {
+    pendingUri = uri
+    val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, uri)
+    launcher.launch(intent)
+  }
   val takeVideo = rememberLauncherForActivityResult(
-    ActivityResultContracts.TakeVideo()
-  ) { success: Boolean ->
+    ActivityResultContracts.StartActivityForResult()
+  ) { result ->
     val uri = pendingUri
-    if (success && uri != null) {
+    if (result.resultCode == Activity.RESULT_OK && uri != null) {
       markVideoReady(context, uri)
       onCaptured(uri.toString())
     }
@@ -185,8 +194,7 @@ fun rememberVideoCapture(onCaptured: (String) -> Unit): () -> Unit {
     ActivityResultContracts.RequestPermission()
   ) { granted ->
     if (granted) {
-      pendingUri = createVideoCaptureUri(context)
-      pendingUri?.let { takeVideo.launch(it) }
+      createVideoCaptureUri(context)?.let { launchCapture(it, takeVideo) }
     }
   }
   return remember {
@@ -197,8 +205,7 @@ fun rememberVideoCapture(onCaptured: (String) -> Unit): () -> Unit {
       ) {
         writePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
       } else {
-        pendingUri = createVideoCaptureUri(context)
-        pendingUri?.let { takeVideo.launch(it) }
+        createVideoCaptureUri(context)?.let { launchCapture(it, takeVideo) }
       }
     }
   }
