@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -126,62 +127,139 @@ fun rememberCameraCapture(onCaptured: (String) -> Unit): () -> Unit {
   }
 }
 
-/** Ligne de choix de source : galerie (photo, GIF, vidéo) ou caméra. */
+/** Crée une URI MediaStore pour enregistrer une vidéo capturée en direct. */
+fun createVideoCaptureUri(context: Context): Uri? = try {
+  val name = "RateBench_${System.currentTimeMillis()}.mp4"
+  val values = ContentValues().apply {
+    put(MediaStore.Video.Media.DISPLAY_NAME, name)
+    put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      put(MediaStore.Video.Media.RELATIVE_PATH, "${Environment.DIRECTORY_MOVIES}/RateBench")
+      put(MediaStore.Video.Media.IS_PENDING, 1)
+    }
+  }
+  val collection =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+    } else {
+      MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+    }
+  context.contentResolver.insert(collection, values)
+} catch (_: Exception) {
+  null
+}
+
+private fun markVideoReady(context: Context, uri: Uri) {
+  if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return
+  try {
+    val values = ContentValues().apply {
+      put(MediaStore.Video.Media.IS_PENDING, 0)
+    }
+    context.contentResolver.update(uri, values, null, null)
+  } catch (_: Exception) {
+  }
+}
+
+/**
+ * Déclencheur de capture vidéo en direct (appli caméra externe).
+ * Gère WRITE_EXTERNAL_STORAGE sur Android < 10.
+ */
+@Composable
+fun rememberVideoCapture(onCaptured: (String) -> Unit): () -> Unit {
+  val context = LocalContext.current
+  var pendingUri by remember { androidx.compose.runtime.mutableStateOf<Uri?>(null) }
+  val takeVideo = rememberLauncherForActivityResult(
+    ActivityResultContracts.TakeVideo()
+  ) { success ->
+    val uri = pendingUri
+    if (success && uri != null) {
+      markVideoReady(context, uri)
+      onCaptured(uri.toString())
+    }
+    pendingUri = null
+  }
+  val writePermission = rememberLauncherForActivityResult(
+    ActivityResultContracts.RequestPermission()
+  ) { granted ->
+    if (granted) {
+      pendingUri = createVideoCaptureUri(context)
+      pendingUri?.let { takeVideo.launch(it) }
+    }
+  }
+  return remember {
+    {
+      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
+        ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+        PackageManager.PERMISSION_GRANTED
+      ) {
+        writePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+      } else {
+        pendingUri = createVideoCaptureUri(context)
+        pendingUri?.let { takeVideo.launch(it) }
+      }
+    }
+  }
+}
+
+/** Ligne de choix de source : galerie (photo, GIF, vidéo), photo live ou vidéo live. */
 @Composable
 fun MediaSourceRow(
   onGallery: () -> Unit,
-  onCamera: () -> Unit,
+  onPhoto: () -> Unit,
+  onVideo: () -> Unit,
   modifier: Modifier = Modifier
 ) {
   Row(
     horizontalArrangement = Arrangement.spacedBy(8.dp),
     modifier = modifier
   ) {
-    Surface(
-      shape = RoundedCornerShape(10.dp),
-      color = Color.White,
-      shadowElevation = 1.dp,
-      modifier = Modifier
-        .weight(1f)
-        .clickable(onClick = onGallery)
+    MediaSourceButton(
+      icon = Icons.Default.PhotoLibrary,
+      label = "Galerie",
+      onClick = onGallery,
+      modifier = Modifier.weight(1f)
+    )
+    MediaSourceButton(
+      icon = Icons.Default.PhotoCamera,
+      label = "Photo",
+      onClick = onPhoto,
+      modifier = Modifier.weight(1f)
+    )
+    MediaSourceButton(
+      icon = Icons.Default.Videocam,
+      label = "Vidéo",
+      onClick = onVideo,
+      modifier = Modifier.weight(1f)
+    )
+  }
+}
+
+@Composable
+private fun MediaSourceButton(
+  icon: androidx.compose.ui.graphics.vector.ImageVector,
+  label: String,
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier
+) {
+  Surface(
+    shape = RoundedCornerShape(10.dp),
+    color = Color.White,
+    shadowElevation = 1.dp,
+    modifier = modifier.clickable(onClick = onClick)
+  ) {
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.Center,
+      modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp)
     ) {
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp)
-      ) {
-        Icon(
-          imageVector = Icons.Default.PhotoLibrary,
-          contentDescription = null,
-          tint = Slate800,
-          modifier = Modifier.size(16.dp)
-        )
-        Spacer(modifier = Modifier.width(6.dp))
-        Text("Photo, GIF, vidéo", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Slate900)
-      }
-    }
-    Surface(
-      shape = RoundedCornerShape(10.dp),
-      color = Color.White,
-      shadowElevation = 1.dp,
-      modifier = Modifier
-        .weight(1f)
-        .clickable(onClick = onCamera)
-    ) {
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp)
-      ) {
-        Icon(
-          imageVector = Icons.Default.PhotoCamera,
-          contentDescription = null,
-          tint = Slate800,
-          modifier = Modifier.size(16.dp)
-        )
-        Spacer(modifier = Modifier.width(6.dp))
-        Text("Caméra", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Slate900)
-      }
+      Icon(
+        imageVector = icon,
+        contentDescription = null,
+        tint = Slate800,
+        modifier = Modifier.size(16.dp)
+      )
+      Spacer(modifier = Modifier.width(6.dp))
+      Text(label, fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Slate900)
     }
   }
 }

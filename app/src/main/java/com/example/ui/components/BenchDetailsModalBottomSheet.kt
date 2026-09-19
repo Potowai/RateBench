@@ -25,11 +25,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddAPhoto
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Directions
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -116,6 +113,9 @@ fun BenchDetailsModalBottomSheet(
     }
   }
   val capturePhoto = rememberCameraCapture { uri ->
+    selectedReviewPhotoUrl = uri
+  }
+  val captureVideo = rememberVideoCapture { uri ->
     selectedReviewPhotoUrl = uri
   }
 
@@ -324,15 +324,34 @@ fun BenchDetailsModalBottomSheet(
               )
             )
 
-            OutlinedTextField(
-              value = myComment,
-              onValueChange = { myComment = it },
-              placeholder = { Text("Partagez votre avis sur ce spot (confort, calme, vue...)", fontSize = 12.sp) },
-              modifier = Modifier.fillMaxWidth(),
-              shape = RoundedCornerShape(12.dp),
-              minLines = 2,
-              maxLines = 4
-            )
+            // Commentaire : saisie directe si connecté, sinon tap → création de compte
+            if (isLoggedIn) {
+              OutlinedTextField(
+                value = myComment,
+                onValueChange = { myComment = it },
+                placeholder = { Text("Partagez votre avis sur ce spot (confort, calme, vue...)", fontSize = 12.sp) },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                minLines = 2,
+                maxLines = 4
+              )
+            } else {
+              Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = Color.White,
+                border = androidx.compose.foundation.BorderStroke(1.dp, Slate300),
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .clickable(onClick = onLoginClick)
+              ) {
+                Text(
+                  text = "Touchez ici pour vous connecter et écrire votre avis…",
+                  fontSize = 12.sp,
+                  color = Slate500,
+                  modifier = Modifier.padding(horizontal = 16.dp, vertical = 18.dp)
+                )
+              }
+            }
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -359,85 +378,42 @@ fun BenchDetailsModalBottomSheet(
                 onRemove = { selectedReviewPhotoUrl = null }
               )
             } else {
-              // Boutons d'ajout de média : galerie (photo, GIF, vidéo), caméra, exemples
-              Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+              // Sources : galerie (photo, GIF, vidéo) ou capture live photo/vidéo
+              MediaSourceRow(
+                onGallery = {
+                  galleryLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
+                  )
+                },
+                onPhoto = { capturePhoto() },
+                onVideo = { captureVideo() },
                 modifier = Modifier.fillMaxWidth()
+              )
+
+              Spacer(modifier = Modifier.height(8.dp))
+
+              // Photos d'exemple prédéfinies
+              Surface(
+                shape = RoundedCornerShape(10.dp),
+                color = Color.White,
+                shadowElevation = 1.dp,
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .clickable { showPhotoPickerPresets = !showPhotoPickerPresets }
               ) {
-                Surface(
-                  shape = RoundedCornerShape(10.dp),
-                  color = Color.White,
-                  shadowElevation = 1.dp,
-                  modifier = Modifier
-                    .weight(1f)
-                    .clickable {
-                      galleryLauncher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
-                      )
-                    }
+                Row(
+                  verticalAlignment = Alignment.CenterVertically,
+                  horizontalArrangement = Arrangement.Center,
+                  modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp)
                 ) {
-                  Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp)
-                  ) {
-                    Icon(
-                      imageVector = Icons.Default.AddAPhoto,
-                      contentDescription = null,
-                      tint = Slate800,
-                      modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text("Galerie", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Slate900)
-                  }
-                }
-
-                Surface(
-                  shape = RoundedCornerShape(10.dp),
-                  color = Color.White,
-                  shadowElevation = 1.dp,
-                  modifier = Modifier
-                    .weight(1f)
-                    .clickable { capturePhoto() }
-                ) {
-                  Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp)
-                  ) {
-                    Icon(
-                      imageVector = Icons.Default.PhotoCamera,
-                      contentDescription = null,
-                      tint = Slate800,
-                      modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text("Caméra", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Slate900)
-                  }
-                }
-
-                Surface(
-                  shape = RoundedCornerShape(10.dp),
-                  color = Color.White,
-                  shadowElevation = 1.dp,
-                  modifier = Modifier
-                    .weight(1f)
-                    .clickable { showPhotoPickerPresets = !showPhotoPickerPresets }
-                ) {
-                  Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp)
-                  ) {
-                    Icon(
-                      imageVector = Icons.Default.Image,
-                      contentDescription = null,
-                      tint = Slate800,
-                      modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text("Exemples", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Slate900)
-                  }
+                  Icon(
+                    imageVector = Icons.Default.Image,
+                    contentDescription = null,
+                    tint = Slate800,
+                    modifier = Modifier.size(16.dp)
+                  )
+                  Spacer(modifier = Modifier.width(6.dp))
+                  Text("Exemples", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Slate900)
                 }
               }
 
@@ -507,6 +483,10 @@ fun BenchDetailsModalBottomSheet(
               Spacer(modifier = Modifier.width(8.dp))
               Button(
                 onClick = {
+                  if (!isLoggedIn) {
+                    onLoginClick()
+                    return@Button
+                  }
                   val commentToSend = myComment.ifBlank { "Un spot remarquable !" }
                   onAddReview(myRating, commentToSend, selectedReviewPhotoUrl)
                   isReviewing = false
@@ -516,7 +496,11 @@ fun BenchDetailsModalBottomSheet(
                 colors = ButtonDefaults.buttonColors(containerColor = Slate900, contentColor = Color.White),
                 shape = RoundedCornerShape(10.dp)
               ) {
-                Text("Publier l'avis", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                Text(
+                  if (isLoggedIn) "Publier l'avis" else "Se connecter pour publier",
+                  fontSize = 12.sp,
+                  fontWeight = FontWeight.SemiBold
+                )
               }
             }
           }

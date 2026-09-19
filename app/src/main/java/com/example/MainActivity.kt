@@ -14,6 +14,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
@@ -331,11 +332,11 @@ fun RateBenchMainScreen() {
             },
             shape = RoundedCornerShape(24.dp),
             colors = TextFieldDefaults.colors(
-              focusedContainerColor = Slate100,
-              unfocusedContainerColor = Slate100,
-              disabledContainerColor = Slate100,
-              focusedIndicatorColor = Color.Transparent,
-              unfocusedIndicatorColor = Color.Transparent
+              focusedContainerColor = Color.White,
+              unfocusedContainerColor = Color.White,
+              disabledContainerColor = Color.White,
+              focusedIndicatorColor = Slate900,
+              unfocusedIndicatorColor = Slate300
             ),
             modifier = Modifier
               .weight(1f)
@@ -482,11 +483,11 @@ fun RateBenchMainScreen() {
           )
         }
 
-        // Bouton principal Ajouter un banc
+        // Bouton principal Ajouter un banc (fond clair, texte noir)
         FloatingActionButton(
           onClick = { showAddDialog = true },
-          containerColor = Slate900,
-          contentColor = Color.White,
+          containerColor = Color.White,
+          contentColor = Slate900,
           shape = RoundedCornerShape(24.dp),
           modifier = Modifier.testTag("add_bench_fab")
         ) {
@@ -598,9 +599,10 @@ fun RateBenchMainScreen() {
         ) {
           Surface(
             shape = RoundedCornerShape(20.dp),
-            color = Slate900,
-            contentColor = Color.White,
-            shadowElevation = 6.dp
+            color = Color.White,
+            contentColor = Slate900,
+            shadowElevation = 6.dp,
+            border = BorderStroke(1.dp, Slate300)
           ) {
             Row(
               verticalAlignment = Alignment.CenterVertically,

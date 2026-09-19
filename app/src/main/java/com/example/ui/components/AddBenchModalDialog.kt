@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddAPhoto
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -87,6 +86,10 @@ fun AddBenchModalDialog(
     }
   }
   val capturePhoto = rememberCameraCapture { uri ->
+    photoUrl = uri
+    showPhotoOptions = false
+  }
+  val captureVideo = rememberVideoCapture { uri ->
     photoUrl = uri
     showPhotoOptions = false
   }
@@ -230,7 +233,8 @@ fun AddBenchModalDialog(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
               )
             },
-            onCamera = { capturePhoto() },
+            onPhoto = { capturePhoto() },
+            onVideo = { captureVideo() },
             modifier = Modifier.fillMaxWidth()
           )
         }
