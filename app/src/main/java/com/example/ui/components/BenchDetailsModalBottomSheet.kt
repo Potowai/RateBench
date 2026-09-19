@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Directions
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -92,6 +93,8 @@ fun BenchDetailsModalBottomSheet(
   bench: BenchItem,
   distanceMeters: Int,
   currentUserEmail: String?,
+  isLoggedIn: Boolean,
+  onLoginClick: () -> Unit,
   onDismiss: () -> Unit,
   onAddReview: (rating: Float, comment: String, photoUrl: String?) -> Unit
 ) {
@@ -102,14 +105,18 @@ fun BenchDetailsModalBottomSheet(
   var myComment by remember { mutableStateOf("") }
   var selectedReviewPhotoUrl by remember { mutableStateOf<String?>(null) }
   var showPhotoPickerPresets by remember { mutableStateOf(false) }
+  val isVideo = isVideoUri(context, selectedReviewPhotoUrl)
 
-  // Photo Picker standard Android (sans permissions requises)
-  val photoPickerLauncher = rememberLauncherForActivityResult(
+  // Galerie : photo, GIF ou vidéo (sans permission requise)
+  val galleryLauncher = rememberLauncherForActivityResult(
     contract = ActivityResultContracts.PickVisualMedia()
   ) { uri: Uri? ->
     if (uri != null) {
       selectedReviewPhotoUrl = uri.toString()
     }
+  }
+  val capturePhoto = rememberCameraCapture { uri ->
+    selectedReviewPhotoUrl = uri
   }
 
   ModalBottomSheet(
@@ -340,36 +347,19 @@ fun BenchDetailsModalBottomSheet(
             Spacer(modifier = Modifier.height(6.dp))
 
             if (selectedReviewPhotoUrl != null) {
-              // Aperçu de la photo sélectionnée avec bouton de suppression
-              Box(
+              // Aperçu du média sélectionné (vidéo = placeholder) avec suppression
+              MediaPreviewBox(
+                uri = selectedReviewPhotoUrl,
+                isVideo = isVideo,
+                contentDescription = "Média de l'avis",
                 modifier = Modifier
                   .size(100.dp)
                   .clip(RoundedCornerShape(12.dp))
-                  .background(Color.White)
-              ) {
-                AsyncImage(
-                  model = selectedReviewPhotoUrl,
-                  contentDescription = "Photo de l'avis",
-                  modifier = Modifier.fillMaxSize(),
-                  contentScale = ContentScale.Crop
-                )
-                IconButton(
-                  onClick = { selectedReviewPhotoUrl = null },
-                  modifier = Modifier
-                    .size(24.dp)
-                    .align(Alignment.TopEnd)
-                    .background(Color.Black.copy(alpha = 0.6f), CircleShape)
-                ) {
-                  Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Supprimer la photo",
-                    tint = Color.White,
-                    modifier = Modifier.size(14.dp)
-                  )
-                }
-              }
+                  .background(Color.White),
+                onRemove = { selectedReviewPhotoUrl = null }
+              )
             } else {
-              // Boutons d'ajout de photo
+              // Boutons d'ajout de média : galerie (photo, GIF, vidéo), caméra, exemples
               Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth()
@@ -381,8 +371,8 @@ fun BenchDetailsModalBottomSheet(
                   modifier = Modifier
                     .weight(1f)
                     .clickable {
-                      photoPickerLauncher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                      galleryLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
                       )
                     }
                 ) {
@@ -398,7 +388,31 @@ fun BenchDetailsModalBottomSheet(
                       modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text("Ma galerie", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Slate900)
+                    Text("Galerie", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Slate900)
+                  }
+                }
+
+                Surface(
+                  shape = RoundedCornerShape(10.dp),
+                  color = Color.White,
+                  shadowElevation = 1.dp,
+                  modifier = Modifier
+                    .weight(1f)
+                    .clickable { capturePhoto() }
+                ) {
+                  Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp)
+                  ) {
+                    Icon(
+                      imageVector = Icons.Default.PhotoCamera,
+                      contentDescription = null,
+                      tint = Slate800,
+                      modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text("Caméra", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Slate900)
                   }
                 }
 
@@ -453,6 +467,31 @@ fun BenchDetailsModalBottomSheet(
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Compte requis pour publier l'avis (photos partagées)
+            if (!isLoggedIn) {
+              Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = Slate100,
+                modifier = Modifier.fillMaxWidth()
+              ) {
+                Row(
+                  verticalAlignment = Alignment.CenterVertically,
+                  modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                ) {
+                  Text(
+                    text = "Compte gratuit requis pour publier.",
+                    fontSize = 12.sp,
+                    color = Slate800,
+                    modifier = Modifier.weight(1f)
+                  )
+                  TextButton(onClick = onLoginClick) {
+                    Text("Se connecter", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Slate900)
+                  }
+                }
+              }
+              Spacer(modifier = Modifier.height(8.dp))
+            }
+
             // Actions Annuler / Publier l'avis
             Row(
               modifier = Modifier.fillMaxWidth(),
@@ -474,7 +513,7 @@ fun BenchDetailsModalBottomSheet(
                   myComment = ""
                   selectedReviewPhotoUrl = null
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Slate900),
+                colors = ButtonDefaults.buttonColors(containerColor = Slate900, contentColor = Color.White),
                 shape = RoundedCornerShape(10.dp)
               ) {
                 Text("Publier l'avis", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)

@@ -179,7 +179,16 @@ class SupabaseBenchRepository(
         val bytes = context.contentResolver.openInputStream(Uri.parse(uriString))?.use { it.readBytes() }
           ?: return@withContext null
         val mime = context.contentResolver.getType(Uri.parse(uriString)) ?: "image/jpeg"
-        val ext = if (mime.contains("png")) "png" else "jpg"
+        val mimeLower = mime.lowercase()
+        val ext = when {
+          mimeLower.contains("png") -> "png"
+          mimeLower.contains("gif") -> "gif"
+          mimeLower.contains("mp4") -> "mp4"
+          mimeLower.contains("quicktime") -> "mov"
+          mimeLower.contains("webm") -> "webm"
+          mimeLower.contains("3gpp") -> "3gp"
+          else -> "jpg"
+        }
         val path = "${UUID.randomUUID()}.$ext"
         val req = Request.Builder()
           .url("$base/storage/v1/object/$bucket/$path")

@@ -7,11 +7,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -43,12 +41,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.example.ui.theme.Slate100
 import com.example.ui.theme.Slate300
 import com.example.ui.theme.Slate500
@@ -67,21 +64,31 @@ private val sampleBenchPhotos = listOf(
 fun AddBenchModalDialog(
   userLat: Double,
   userLng: Double,
+  isLoggedIn: Boolean,
+  onLoginClick: () -> Unit,
   onDismiss: () -> Unit,
   onBenchAdded: (title: String, rating: Float, comment: String, photoUrl: String) -> Unit
 ) {
+  val context = LocalContext.current
   var title by remember { mutableStateOf("") }
   var rating by remember { mutableStateOf(8.0f) }
   var comment by remember { mutableStateOf("") }
   var photoUrl by remember { mutableStateOf(sampleBenchPhotos.first()) }
   var showPhotoOptions by remember { mutableStateOf(false) }
+  val isVideo = isVideoUri(context, photoUrl)
 
-  val photoPickerLauncher = rememberLauncherForActivityResult(
+  // Galerie : photo, GIF ou vidéo (sans permission requise)
+  val galleryLauncher = rememberLauncherForActivityResult(
     contract = ActivityResultContracts.PickVisualMedia()
   ) { uri: Uri? ->
     if (uri != null) {
       photoUrl = uri.toString()
+      showPhotoOptions = false
     }
+  }
+  val capturePhoto = rememberCameraCapture { uri ->
+    photoUrl = uri
+    showPhotoOptions = false
   }
 
   AlertDialog(
@@ -101,6 +108,30 @@ fun AddBenchModalDialog(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.fillMaxWidth()
       ) {
+        // Compte requis pour publier (photos partagées avec la communauté)
+        if (!isLoggedIn) {
+          Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = Slate100,
+            modifier = Modifier.fillMaxWidth()
+          ) {
+            Row(
+              verticalAlignment = Alignment.CenterVertically,
+              modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+            ) {
+              Text(
+                text = "Compte gratuit requis pour publier.",
+                fontSize = 12.sp,
+                color = Slate800,
+                modifier = Modifier.weight(1f)
+              )
+              TextButton(onClick = onLoginClick) {
+                Text("Se connecter", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Slate900)
+              }
+            }
+          }
+        }
+
         OutlinedTextField(
           value = title,
           onValueChange = { title = it },
@@ -150,38 +181,31 @@ fun AddBenchModalDialog(
           shape = RoundedCornerShape(12.dp)
         )
 
-        // Photo du banc
+        // Média du banc : photo, GIF ou vidéo (galerie ou caméra)
         Text(
-          text = "Photo principale du spot :",
+          text = "Photo ou vidéo du spot :",
           fontSize = 12.sp,
           fontWeight = FontWeight.SemiBold,
           color = Slate800
         )
 
-        Box(
+        MediaPreviewBox(
+          uri = photoUrl,
+          isVideo = isVideo,
+          contentDescription = "Aperçu média du banc",
           modifier = Modifier
             .fillMaxWidth()
             .height(110.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(Slate100)
         ) {
-          AsyncImage(
-            model = photoUrl,
-            contentDescription = "Aperçu photo du banc",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-          )
           Surface(
             shape = CircleShape,
             color = Color.Black.copy(alpha = 0.6f),
             modifier = Modifier
               .align(Alignment.BottomEnd)
               .padding(8.dp)
-              .clickable {
-                photoPickerLauncher.launch(
-                  PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                )
-              }
+              .clickable { showPhotoOptions = !showPhotoOptions }
           ) {
             Row(
               verticalAlignment = Alignment.CenterVertically,
@@ -189,7 +213,7 @@ fun AddBenchModalDialog(
             ) {
               Icon(
                 imageVector = Icons.Default.AddAPhoto,
-                contentDescription = "Changer la photo",
+                contentDescription = "Changer le média",
                 tint = Color.White,
                 modifier = Modifier.size(14.dp)
               )
@@ -197,6 +221,18 @@ fun AddBenchModalDialog(
               Text("Modifier", fontSize = 11.sp, color = Color.White)
             }
           }
+        }
+
+        if (showPhotoOptions) {
+          MediaSourceRow(
+            onGallery = {
+              galleryLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
+              )
+            },
+            onCamera = { capturePhoto() },
+            modifier = Modifier.fillMaxWidth()
+          )
         }
 
         Text(
@@ -213,7 +249,7 @@ fun AddBenchModalDialog(
           val safeComment = comment.ifBlank { "Spot confortable et agréable pour se reposer." }
           onBenchAdded(safeTitle, rating, safeComment, photoUrl)
         },
-        colors = ButtonDefaults.buttonColors(containerColor = Slate900),
+        colors = ButtonDefaults.buttonColors(containerColor = Slate900, contentColor = Color.White),
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.testTag("confirm_add_bench_button")
       ) {

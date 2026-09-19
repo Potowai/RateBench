@@ -96,7 +96,7 @@ fun AuthDialog(
       } else {
         Button(
           onClick = { onLogin(emailInput.ifBlank { "utilisateur@ratebench.app" }, passwordInput) },
-          colors = ButtonDefaults.buttonColors(containerColor = Slate900),
+          colors = ButtonDefaults.buttonColors(containerColor = Slate900, contentColor = Color.White),
           shape = RoundedCornerShape(12.dp)
         ) {
           Text("Se connecter")

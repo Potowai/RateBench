@@ -52,6 +52,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -359,21 +361,30 @@ fun RateBenchMainScreen() {
             )
           }
 
-          // Bouton profil / connexion
-          IconButton(
-            onClick = { showAuthDialog = true },
-            modifier = Modifier
-              .size(44.dp)
-              .clip(CircleShape)
-              .background(Slate100)
-              .testTag("auth_button")
+          // Bouton profil / connexion (pastille verte = connecté)
+          BadgedBox(
+            badge = {
+              Badge(
+                containerColor = if (currentUserEmail != null) Color(0xFF10B981) else Slate300,
+                modifier = Modifier.size(10.dp)
+              )
+            },
+            modifier = Modifier.testTag("auth_button")
           ) {
-            Icon(
-              imageVector = Icons.Default.Person,
-              contentDescription = "Profil",
-              tint = if (currentUserEmail != null) Slate900 else Slate500,
-              modifier = Modifier.size(20.dp)
-            )
+            IconButton(
+              onClick = { showAuthDialog = true },
+              modifier = Modifier
+                .size(44.dp)
+                .clip(CircleShape)
+                .background(Slate100)
+            ) {
+              Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = if (currentUserEmail != null) "Profil ($currentUserEmail)" else "Profil (non connecté)",
+                tint = if (currentUserEmail != null) Slate900 else Slate500,
+                modifier = Modifier.size(20.dp)
+              )
+            }
           }
         }
 
@@ -654,6 +665,8 @@ fun RateBenchMainScreen() {
       bench = bench,
       distanceMeters = dist,
       currentUserEmail = currentUserEmail,
+      isLoggedIn = currentUserEmail != null,
+      onLoginClick = { selectedBench = null; showAuthDialog = true },
       onDismiss = { selectedBench = null },
       onAddReview = { rating, comment, photoUrl ->
         coroutineScope.launch {
@@ -708,6 +721,8 @@ fun RateBenchMainScreen() {
     AddBenchModalDialog(
       userLat = userLat,
       userLng = userLng,
+      isLoggedIn = currentUserEmail != null,
+      onLoginClick = { showAddDialog = false; showAuthDialog = true },
       onDismiss = { showAddDialog = false },
       onBenchAdded = { title, rating, comment, photoUrl ->
         coroutineScope.launch {
