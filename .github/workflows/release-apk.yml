@@ -122,7 +122,7 @@ jobs:
 
       - name: Rename APK with version
         run: |
-          TAG="${GITHUB_REF_NAME}"
+          TAG="${GITHUB_REF_NAME//\//-}"
           cp app/build/outputs/apk/release/app-release.apk "RateBench-${TAG}.apk"
           ls -la *.apk
 
