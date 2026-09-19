@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch: # build manuel de vérification (sans release)
 
 permissions:
   contents: write

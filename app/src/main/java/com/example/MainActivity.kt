@@ -74,6 +74,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.data.BenchRemoteRepository
+import com.example.data.supabase.SupabaseAuthRepository
+import com.example.data.supabase.SupabaseBenchRepository
 import com.example.model.BenchItem
 import com.example.model.BenchReview
 import com.example.model.calculateDistanceMeters
@@ -119,7 +121,12 @@ private fun formatDistance(meters: Int): String {
 fun RateBenchMainScreen() {
   val context = LocalContext.current
   val coroutineScope = rememberCoroutineScope()
-  val repository = remember { BenchRemoteRepository(context) }
+  // Backend : Supabase partagé si configuré (.env), sinon données locales simulées.
+  // SupabaseBenchRepository expose les mêmes signatures et bascule seul en repli local.
+  val authRepository = remember { SupabaseAuthRepository(context) }
+  val repository = remember {
+    SupabaseBenchRepository(context, authRepository, BenchRemoteRepository(context))
+  }
 
   // Coordonnées de géolocalisation de l'utilisateur (Paris centre)
   val userLat = 48.8575
@@ -134,7 +141,8 @@ fun RateBenchMainScreen() {
   var selectedBench by remember { mutableStateOf<BenchItem?>(null) }
   var showAddDialog by remember { mutableStateOf(false) }
   var showAuthDialog by remember { mutableStateOf(false) }
-  var currentUserEmail by remember { mutableStateOf<String?>("alex@ratebench.app") }
+  var currentUserEmail by remember { mutableStateOf<String?>(authRepository.sessionEmail()) }
+  var authError by remember { mutableStateOf<String?>(null) }
 
   var webViewRef by remember { mutableStateOf<WebView?>(null) }
   var isMapReady by remember { mutableStateOf(false) }
@@ -580,12 +588,23 @@ fun RateBenchMainScreen() {
             photoUrl = photoUrl // Support de la photo d'avis !
           )
 
-          val (updatedBench, updatedList) = repository.addReviewToBench(
-            benchId = bench.id,
-            review = newReview,
-            userLat = userLat,
-            userLng = userLng
-          )
+          val (updatedBench, updatedList) = try {
+            repository.addReviewToBench(
+              benchId = bench.id,
+              review = newReview,
+              userLat = userLat,
+              userLng = userLng
+            )
+          } catch (e: Exception) {
+            if (e.message == "login_required") {
+              syncToastMessage = "Connectez-vous pour publier un avis"
+            } else {
+              syncToastMessage = "Échec d'envoi, réessayez"
+            }
+            delay(2500)
+            syncToastMessage = null
+            return@launch
+          }
 
           benches = updatedList
           if (updatedBench != null) {
@@ -636,7 +655,18 @@ fun RateBenchMainScreen() {
             )
           )
 
-          val updatedList = repository.insertBench(newBench, userLat, userLng)
+          val updatedList = try {
+            repository.insertBench(newBench, userLat, userLng)
+          } catch (e: Exception) {
+            if (e.message == "login_required") {
+              syncToastMessage = "Connectez-vous pour ajouter un spot"
+            } else {
+              syncToastMessage = "Échec d'envoi, réessayez"
+            }
+            delay(2500)
+            syncToastMessage = null
+            return@launch
+          }
           benches = updatedList
           showAddDialog = false
 
@@ -658,13 +688,37 @@ fun RateBenchMainScreen() {
   if (showAuthDialog) {
     AuthDialog(
       currentUserEmail = currentUserEmail,
-      onDismiss = { showAuthDialog = false },
-      onLogin = { email ->
-        currentUserEmail = email
-        showAuthDialog = false
+      authError = authError,
+      onDismiss = { showAuthDialog = false; authError = null },
+      onLogin = { email, password ->
+        coroutineScope.launch {
+          try {
+            authError = null
+            if (password.length < 6) {
+              authError = "Mot de passe : 6 caractères minimum"
+              return@launch
+            }
+            authRepository.signInOrUp(email, password)
+            currentUserEmail = email
+            showAuthDialog = false
+            syncToastMessage = "Connecté, vos contenus sont partagés !"
+            delay(2500)
+            syncToastMessage = null
+          } catch (e: Exception) {
+            authError = when {
+              e.message?.startsWith("signin_failed:400") == true ->
+                "Email ou mot de passe incorrect"
+              e.message?.startsWith("supabase_not_configured") == true ->
+                "Backend non configuré (mode local)"
+              else -> "Connexion impossible, réessayez"
+            }
+          }
+        }
       },
       onLogout = {
+        authRepository.signOut()
         currentUserEmail = null
+        authError = null
         showAuthDialog = false
       }
     )

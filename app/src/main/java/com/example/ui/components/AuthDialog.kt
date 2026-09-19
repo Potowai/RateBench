@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.Slate500
@@ -28,11 +29,13 @@ import com.example.ui.theme.Slate900
 @Composable
 fun AuthDialog(
   currentUserEmail: String?,
+  authError: String?,
   onDismiss: () -> Unit,
-  onLogin: (String) -> Unit,
+  onLogin: (String, String) -> Unit,
   onLogout: () -> Unit
 ) {
   var emailInput by remember { mutableStateOf("") }
+  var passwordInput by remember { mutableStateOf("") }
 
   AlertDialog(
     onDismissRequest = onDismiss,
@@ -71,6 +74,17 @@ fun AuthDialog(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp)
           )
+          OutlinedTextField(
+            value = passwordInput,
+            onValueChange = { passwordInput = it },
+            placeholder = { Text("Mot de passe (min. 6 caractères)") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            visualTransformation = PasswordVisualTransformation()
+          )
+          if (authError != null) {
+            Text(text = authError, fontSize = 12.sp, color = MaterialTheme.colorScheme.error)
+          }
         }
       }
     },
@@ -81,7 +95,7 @@ fun AuthDialog(
         }
       } else {
         Button(
-          onClick = { onLogin(emailInput.ifBlank { "utilisateur@ratebench.app" }) },
+          onClick = { onLogin(emailInput.ifBlank { "utilisateur@ratebench.app" }, passwordInput) },
           colors = ButtonDefaults.buttonColors(containerColor = Slate900),
           shape = RoundedCornerShape(12.dp)
         ) {
