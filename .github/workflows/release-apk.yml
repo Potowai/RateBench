@@ -38,6 +38,18 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/my-upload-key.jks"
           ls -la "$RUNNER_TEMP/my-upload-key.jks"
 
+      - name: Configure Supabase keys (.env)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_ANON_KEY" ]; then
+            printf 'SUPABASE_URL=%s\nSUPABASE_ANON_KEY=%s\n' "$SUPABASE_URL" "$SUPABASE_ANON_KEY" > .env
+            echo "Supabase .env configured (cloud mode)"
+          else
+            echo "No Supabase secrets, building in local mode"
+          fi
+
       - name: Build release APK
         env:
           KEYSTORE_PATH: ${{ runner.temp }}/my-upload-key.jks
