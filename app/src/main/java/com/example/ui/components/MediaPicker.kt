@@ -106,7 +106,7 @@ fun rememberCameraCapture(onCaptured: (String) -> Unit): () -> Unit {
   val context = LocalContext.current
   val takePicture = rememberLauncherForActivityResult(
     ActivityResultContracts.TakePicturePreview()
-  ) { bitmap ->
+  ) { bitmap: Bitmap? ->
     if (bitmap != null) {
       saveCameraBitmap(context, bitmap)?.let { onCaptured(it) }
     }
@@ -173,7 +173,7 @@ fun rememberVideoCapture(onCaptured: (String) -> Unit): () -> Unit {
   var pendingUri by remember { androidx.compose.runtime.mutableStateOf<Uri?>(null) }
   val takeVideo = rememberLauncherForActivityResult(
     ActivityResultContracts.TakeVideo()
-  ) { success ->
+  ) { success: Boolean ->
     val uri = pendingUri
     if (success && uri != null) {
       markVideoReady(context, uri)
