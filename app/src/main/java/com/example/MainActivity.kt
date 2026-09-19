@@ -1,10 +1,14 @@
 package com.example
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.webkit.WebView
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -19,12 +23,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -72,6 +81,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.example.data.BenchRemoteRepository
 import com.example.data.supabase.SupabaseAuthRepository
@@ -92,6 +102,8 @@ import com.example.ui.theme.Slate500
 import com.example.ui.theme.Slate700
 import com.example.ui.theme.Slate800
 import com.example.ui.theme.Slate900
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -128,9 +140,18 @@ fun RateBenchMainScreen() {
     SupabaseBenchRepository(context, authRepository, BenchRemoteRepository(context))
   }
 
-  // Coordonnées de géolocalisation de l'utilisateur (Paris centre)
-  val userLat = 48.8575
-  val userLng = 2.3514
+  // Position réelle (GPS) avec repli Paris centre si indisponible ou refusée
+  var userLat by remember { mutableStateOf(48.8575) }
+  var userLng by remember { mutableStateOf(2.3514) }
+  var gpsActive by remember { mutableStateOf(false) }
+
+  val fusedClient = remember { LocationServices.getFusedLocationProviderClient(context) }
+
+  fun hasLocationPermission(): Boolean =
+    ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==
+      PackageManager.PERMISSION_GRANTED ||
+      ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+        PackageManager.PERMISSION_GRANTED
 
   var benches by remember { mutableStateOf<List<BenchItem>>(emptyList()) }
   var isRefreshing by remember { mutableStateOf(false) }
@@ -182,9 +203,70 @@ fun RateBenchMainScreen() {
     }
   }
 
-  // Chargement initial depuis la base de données distante
+  // Demande une position fraîche, recentre la carte et resynchronise le rayon
+  fun fetchFreshLocation() {
+    if (!hasLocationPermission()) return
+    try {
+      fusedClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, null)
+        .addOnSuccessListener { location ->
+          if (location != null) {
+            userLat = location.latitude
+            userLng = location.longitude
+            gpsActive = true
+            webViewRef?.evaluateJavascript("centerMap($userLat, $userLng, 15);", null)
+            syncWithExternalDatabase(silent = true)
+          } else {
+            fusedClient.lastLocation.addOnSuccessListener { last ->
+              if (last != null) {
+                userLat = last.latitude
+                userLng = last.longitude
+                gpsActive = true
+                webViewRef?.evaluateJavascript("centerMap($userLat, $userLng, 15);", null)
+                syncWithExternalDatabase(silent = true)
+              } else {
+                syncToastMessage = "Position indisponible, Paris par défaut"
+                coroutineScope.launch { delay(2500); syncToastMessage = null }
+              }
+            }
+          }
+        }
+        .addOnFailureListener {
+          syncToastMessage = "GPS indisponible, Paris par défaut"
+          coroutineScope.launch { delay(2500); syncToastMessage = null }
+        }
+    } catch (_: SecurityException) {
+      gpsActive = false
+    }
+  }
+
+  val locationPermissionLauncher = rememberLauncherForActivityResult(
+    ActivityResultContracts.RequestMultiplePermissions()
+  ) { grants ->
+    if (grants.values.any { it }) {
+      fetchFreshLocation()
+    } else {
+      syncToastMessage = "GPS refusé, Paris par défaut"
+      coroutineScope.launch { delay(2500); syncToastMessage = null }
+    }
+  }
+
+  fun requestLocationOrFetch() {
+    if (hasLocationPermission()) {
+      fetchFreshLocation()
+    } else {
+      locationPermissionLauncher.launch(
+        arrayOf(
+          Manifest.permission.ACCESS_FINE_LOCATION,
+          Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+      )
+    }
+  }
+
+  // Chargement initial depuis la base de données distante + demande GPS
   LaunchedEffect(Unit) {
     syncWithExternalDatabase(silent = true)
+    requestLocationOrFetch()
   }
 
   // Mise à jour de la carte dès qu'elle est prête ou que les bancs changent
@@ -220,11 +302,14 @@ fun RateBenchMainScreen() {
         modifier = Modifier
           .fillMaxWidth()
           .background(Color.White)
-          .padding(top = 8.dp, bottom = 6.dp)
+          .statusBarsPadding()
+          .padding(top = 8.dp, bottom = 6.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
       ) {
         Row(
           modifier = Modifier
             .fillMaxWidth()
+            .widthIn(max = 720.dp)
             .padding(horizontal = 16.dp),
           verticalAlignment = Alignment.CenterVertically,
           horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -296,6 +381,7 @@ fun RateBenchMainScreen() {
         Row(
           modifier = Modifier
             .fillMaxWidth()
+            .widthIn(max = 720.dp)
             .padding(horizontal = 16.dp, vertical = 4.dp),
           horizontalArrangement = Arrangement.SpaceBetween,
           verticalAlignment = Alignment.CenterVertically
@@ -307,7 +393,7 @@ fun RateBenchMainScreen() {
               modifier = Modifier.padding(end = 6.dp)
             ) {
               Text(
-                text = "Rayon 100 km (GPS)",
+                text = if (gpsActive) "Rayon 100 km (GPS)" else "Rayon 100 km (Paris)",
                 fontSize = 11.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Slate800,
@@ -362,17 +448,15 @@ fun RateBenchMainScreen() {
     floatingActionButton = {
       // FAB central pour ajouter un banc & bouton recentrage GPS
       Row(
+        modifier = Modifier
+          .navigationBarsPadding()
+          .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically
       ) {
-        // Bouton Recentrage GPS
+        // Bouton Recentrage GPS (position fraîche réelle)
         FloatingActionButton(
-          onClick = {
-            if (webViewRef != null) {
-              webViewRef?.evaluateJavascript("centerMap($userLat, $userLng, 16);", null)
-              webViewRef?.evaluateJavascript("setUserLocation($userLat, $userLng);", null)
-            }
-          },
+          onClick = { requestLocationOrFetch() },
           containerColor = Color.White,
           contentColor = Slate900,
           shape = CircleShape,
@@ -417,7 +501,7 @@ fun RateBenchMainScreen() {
         .fillMaxSize()
         .padding(paddingValues)
     ) {
-      Box(
+      BoxWithConstraints(
         modifier = Modifier
           .fillMaxSize()
           // Détection du geste de glissement du haut vers le bas sur la carte
@@ -435,6 +519,9 @@ fun RateBenchMainScreen() {
             )
           }
       ) {
+        // Écrans larges (tablette/paysage ≥ 600dp) : carte + liste côte à côte
+        val wideLayout = maxWidth >= 600.dp
+
         // 1. CARTE OPENSTREETMAP PLEIN ÉCRAN
         OpenStreetMapWebView(
           onWebViewCreated = { webView ->
@@ -524,44 +611,35 @@ fun RateBenchMainScreen() {
           }
         }
 
-        // 2. VUE LISTE ALTERNATIVE (Animée)
+        // 2. VUE LISTE ALTERNATIVE (Animée, écrans étroits uniquement)
         AnimatedVisibility(
-          visible = isListView,
+          visible = isListView && !wideLayout,
           enter = fadeIn(),
           exit = fadeOut()
         ) {
+          BenchListPanel(
+            benches = filteredBenches,
+            userLat = userLat,
+            userLng = userLng,
+            onBenchClick = { selectedBench = it }
+          )
+        }
+
+        // 2b. ÉCRANS LARGES : panneau liste persistant à droite de la carte
+        if (wideLayout) {
           Box(
             modifier = Modifier
-              .fillMaxSize()
+              .align(Alignment.CenterEnd)
+              .width(360.dp)
+              .fillMaxHeight()
               .background(Slate100)
           ) {
-            if (filteredBenches.isEmpty()) {
-              Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-              ) {
-                Text(
-                  text = "Aucun spot trouvé dans un rayon de 100 km.",
-                  color = Slate500,
-                  fontSize = 14.sp
-                )
-              }
-            } else {
-              LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 100.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-              ) {
-                items(filteredBenches, key = { it.id }) { bench ->
-                  BenchListItemCard(
-                    bench = bench,
-                    userLat = userLat,
-                    userLng = userLng,
-                    onClick = { selectedBench = bench }
-                  )
-                }
-              }
-            }
+            BenchListPanel(
+              benches = filteredBenches,
+              userLat = userLat,
+              userLng = userLng,
+              onBenchClick = { selectedBench = it }
+            )
           }
         }
       }
@@ -722,6 +800,49 @@ fun RateBenchMainScreen() {
         showAuthDialog = false
       }
     )
+  }
+}
+
+// Panneau liste des spots (plein écran sur téléphone, latéral sur tablette)
+@Composable
+fun BenchListPanel(
+  benches: List<BenchItem>,
+  userLat: Double,
+  userLng: Double,
+  onBenchClick: (BenchItem) -> Unit
+) {
+  Box(
+    modifier = Modifier
+      .fillMaxSize()
+      .background(Slate100)
+  ) {
+    if (benches.isEmpty()) {
+      Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+      ) {
+        Text(
+          text = "Aucun spot trouvé dans un rayon de 100 km.",
+          color = Slate500,
+          fontSize = 14.sp
+        )
+      }
+    } else {
+      LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 100.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+      ) {
+        items(benches, key = { it.id }) { bench ->
+          BenchListItemCard(
+            bench = bench,
+            userLat = userLat,
+            userLng = userLng,
+            onClick = { onBenchClick(bench) }
+          )
+        }
+      }
+    }
   }
 }
 

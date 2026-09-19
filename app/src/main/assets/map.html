@@ -30,6 +30,16 @@
             bottom: 0;
             background-color: #f1f5f9;
         }
+        .bench-marker-wrapper {
+            background: transparent;
+            border: none;
+        }
+        .bench-marker-wrapper .bench-pill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform: translate(-50%, -50%);
+        }
         .bench-pill {
             display: inline-flex;
             align-items: center;
@@ -104,6 +114,9 @@
             maxZoom: 19,
             minZoom: 4
         }).setView([48.8575, 2.3514], 15);
+        // Attribution en haut-gauche : jamais masquée par les boutons natifs du bas
+        map.attributionControl.setPosition('topleft');
+        map.attributionControl.setPrefix(false);
 
         // Tuiles OpenStreetMap officielles 100% gratuites sans clé API requise
         var tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -152,8 +165,10 @@
                               '<span class="star">★</span>' +
                               '<span>' + ratingFormatted + '</span>' +
                               '</div>',
-                        iconSize: [66, 36],
-                        iconAnchor: [33, 18]
+                        // Taille nulle + ancre nulle : la pastille est centrée
+                        // en CSS (translate -50%,-50%), jamais tronquée
+                        iconSize: [0, 0],
+                        iconAnchor: [0, 0]
                     });
 
                     var marker = L.marker([b.latitude, b.longitude], { icon: icon });
