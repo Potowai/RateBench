@@ -18,7 +18,6 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -77,7 +76,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -615,8 +613,9 @@ fun RateBenchMainScreen() {
       }
     }
   ) { paddingValues ->
-    // RÈGLE : PullToRefreshBox - un simple scroll du haut vers le bas rafraîchit la carte
-    // et fait un appel à l'API de la base de données externe
+    // RÈGLE : la carte gère elle-même tous les gestes (glisser 1 doigt, pincement,
+    // double-tap). Le rafraîchissement passe par le bouton "Rafraîchir" : aucun
+    // intercepteur de geste ici pour ne pas voler les mouvements à la carte.
     PullToRefreshBox(
       isRefreshing = isRefreshing,
       onRefresh = { syncWithExternalDatabase() },
@@ -626,22 +625,7 @@ fun RateBenchMainScreen() {
         .padding(paddingValues)
     ) {
       BoxWithConstraints(
-        modifier = Modifier
-          .fillMaxSize()
-          // Détection du geste de glissement du haut vers le bas sur la carte
-          .pointerInput(Unit) {
-            var totalDragY = 0f
-            detectVerticalDragGestures(
-              onDragStart = { totalDragY = 0f },
-              onVerticalDrag = { _, dragAmount ->
-                totalDragY += dragAmount
-                if (totalDragY > 180f && !isRefreshing) {
-                  totalDragY = 0f
-                  syncWithExternalDatabase()
-                }
-              }
-            )
-          }
+        modifier = Modifier.fillMaxSize()
       ) {
         // Écrans larges (tablette/paysage ≥ 600dp) : carte + liste côte à côte
         val wideLayout = maxWidth >= 600.dp

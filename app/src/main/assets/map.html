@@ -111,6 +111,20 @@
         var map = L.map('map', {
             zoomControl: false,
             attributionControl: true,
+            // Manipulation complète façon Google Maps : glisser 1 doigt,
+            // pincement pour zoomer, double-tap, inertie, monde continu
+            dragging: true,
+            touchZoom: true,
+            doubleClickZoom: true,
+            scrollWheelZoom: false,
+            boxZoom: true,
+            tap: true,
+            tapTolerance: 15,
+            inertia: true,
+            inertiaDeceleration: 3000,
+            inertiaMaxSpeed: 1500,
+            bounceAtZoomLimits: true,
+            worldCopyJump: true,
             maxZoom: 19,
             minZoom: 4
         }).setView([48.8575, 2.3514], 15);
