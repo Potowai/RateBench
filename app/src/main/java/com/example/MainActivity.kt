@@ -87,12 +87,16 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.example.data.BenchRemoteRepository
+import com.example.data.PublishDraftStore
+import com.example.data.randomAnonymousPseudo
 import com.example.data.supabase.SupabaseAuthRepository
 import com.example.data.supabase.SupabaseBenchRepository
+import com.example.data.supabase.SupabaseConfig
 import com.example.model.BenchItem
 import com.example.model.BenchReview
 import com.example.model.calculateDistanceMeters
 import com.example.ui.components.AddBenchModalDialog
+import com.example.ui.components.AnonymousPublishDialog
 import com.example.ui.components.AuthDialog
 import com.example.ui.components.BenchDetailsModalBottomSheet
 import com.example.ui.components.OpenStreetMapWebView
@@ -167,6 +171,13 @@ fun RateBenchMainScreen() {
   var showAuthDialog by remember { mutableStateOf(false) }
   var currentUserEmail by remember { mutableStateOf<String?>(authRepository.sessionEmail()) }
   var authError by remember { mutableStateOf<String?>(null) }
+
+  // Brouillon de publication (non connecté) + dialogue anonyme
+  val draftStore = remember { PublishDraftStore(context) }
+  var showAnonymousDialog by remember { mutableStateOf(false) }
+  var pendingReviewBenchId by remember { mutableStateOf<String?>(null) }
+  var anonPseudo by remember { mutableStateOf("") }
+  var anonHasMedia by remember { mutableStateOf(false) }
 
   var webViewRef by remember { mutableStateOf<WebView?>(null) }
   var isMapReady by remember { mutableStateOf(false) }
@@ -263,6 +274,99 @@ fun RateBenchMainScreen() {
           Manifest.permission.ACCESS_COARSE_LOCATION
         )
       )
+    }
+  }
+
+  /** Connexion requise seulement en mode cloud (en local tout est permis). */
+  fun cloudLoginRequired(): Boolean = SupabaseConfig.isConfigured && !authRepository.isLoggedIn
+
+  /** Ouvre le dialogue anonyme/login en gardant le brouillon pré-rempli. */
+  fun openAnonymousFlow() {
+    anonPseudo = randomAnonymousPseudo()
+    val spotPhoto = draftStore.getSpot()?.photoUrl
+    val reviewPhoto = pendingReviewBenchId?.let { draftStore.getReview(it)?.photoUrl }
+    anonHasMedia = spotPhoto?.startsWith("content://") == true ||
+      reviewPhoto?.startsWith("content://") == true
+    showAnonymousDialog = true
+  }
+
+  /** Publie le brouillon en attente sous le pseudo anonyme. */
+  fun publishAnonymous(pseudo: String) {
+    val safePseudo = pseudo.ifBlank { randomAnonymousPseudo() }
+    coroutineScope.launch {
+      showAnonymousDialog = false
+      try {
+        val spot = draftStore.getSpot()
+        val reviewBenchId = pendingReviewBenchId
+        if (spot != null) {
+          val newBench = BenchItem(
+            id = "bench-${UUID.randomUUID().toString().take(8)}",
+            title = spot.title.ifBlank { "Nouveau banc remarquable" },
+            latitude = userLat + (Math.random() - 0.5) * 0.015,
+            longitude = userLng + (Math.random() - 0.5) * 0.015,
+            rating = spot.rating,
+            reviewCount = 1,
+            description = spot.comment.ifBlank { "Spot confortable et agréable pour se reposer." },
+            photoUrl = spot.photoUrl,
+            author = safePseudo,
+            reviews = listOf(
+              BenchReview(
+                id = "rev-initial-${UUID.randomUUID().toString().take(6)}",
+                userName = safePseudo,
+                rating = spot.rating.toInt(),
+                comment = spot.comment.ifBlank { "Spot confortable et agréable pour se reposer." },
+                date = "À l'instant",
+                photoUrl = spot.photoUrl
+              )
+            )
+          )
+          val updatedList = repository.insertBench(newBench, userLat, userLng)
+          draftStore.clearSpot()
+          benches = updatedList
+          if (webViewRef != null && isMapReady) {
+            val json = benchesToJson(updatedList)
+            webViewRef?.evaluateJavascript("setBenches('$json');", null)
+            webViewRef?.evaluateJavascript("centerMap(${newBench.latitude}, ${newBench.longitude}, 17);", null)
+          }
+          syncToastMessage = "Spot partagé en anonyme !"
+        } else if (reviewBenchId != null) {
+          val draft = draftStore.getReview(reviewBenchId)
+          if (draft != null) {
+            val review = BenchReview(
+              id = "rev-${UUID.randomUUID().toString().take(8)}",
+              userName = safePseudo,
+              rating = draft.rating.toInt(),
+              comment = draft.comment.ifBlank { "Un spot remarquable !" },
+              date = "À l'instant",
+              photoUrl = draft.photoUrl
+            )
+            val (updatedBench, updatedList) = repository.addReviewToBench(
+              reviewBenchId, review, userLat, userLng
+            )
+            draftStore.clearReview(reviewBenchId)
+            benches = updatedList
+            if (updatedBench != null) {
+              selectedBench = updatedBench
+            }
+            if (webViewRef != null && isMapReady) {
+              val json = benchesToJson(updatedList)
+              webViewRef?.evaluateJavascript("setBenches('$json');", null)
+            }
+            syncToastMessage = "Avis partagé en anonyme !"
+          }
+          pendingReviewBenchId = null
+        }
+        delay(2500)
+        syncToastMessage = null
+      } catch (e: Exception) {
+        syncToastMessage = if ((e.message ?: "").contains("login")) {
+          "Base en mise à jour, réessayez plus tard"
+        } else {
+          "Échec d'envoi, réessayez"
+        }
+        delay(2500)
+        syncToastMessage = null
+      }
     }
   }
 
@@ -667,8 +771,8 @@ fun RateBenchMainScreen() {
       bench = bench,
       distanceMeters = dist,
       currentUserEmail = currentUserEmail,
-      isLoggedIn = currentUserEmail != null,
-      onLoginClick = { selectedBench = null; showAuthDialog = true },
+      isLoggedIn = currentUserEmail != null || !SupabaseConfig.isConfigured,
+      onLoginClick = { pendingReviewBenchId = bench.id; selectedBench = null; openAnonymousFlow() },
       onDismiss = { selectedBench = null },
       onAddReview = { rating, comment, photoUrl ->
         coroutineScope.launch {
@@ -723,11 +827,18 @@ fun RateBenchMainScreen() {
     AddBenchModalDialog(
       userLat = userLat,
       userLng = userLng,
-      isLoggedIn = currentUserEmail != null,
-      onLoginClick = { showAddDialog = false; showAuthDialog = true },
+      isLoggedIn = currentUserEmail != null || !SupabaseConfig.isConfigured,
+      onLoginClick = { pendingReviewBenchId = null; showAddDialog = false; openAnonymousFlow() },
       onDismiss = { showAddDialog = false },
       onBenchAdded = { title, rating, comment, photoUrl ->
         coroutineScope.launch {
+          // Non connecté en mode cloud : brouillon gardé + proposition connexion/anonyme
+          if (cloudLoginRequired()) {
+            draftStore.saveSpot(title, rating, comment, photoUrl)
+            showAddDialog = false
+            openAnonymousFlow()
+            return@launch
+          }
           val newBench = BenchItem(
             id = "bench-${UUID.randomUUID().toString().take(8)}",
             title = title,
@@ -796,7 +907,19 @@ fun RateBenchMainScreen() {
             authRepository.signInOrUp(email, password)
             currentUserEmail = email
             showAuthDialog = false
-            syncToastMessage = "Connecté, vos contenus sont partagés !"
+            // Reprise du brouillon : formulaire pré-rempli à valider
+            val pendingSpot = draftStore.getSpot()
+            val pendingReview = pendingReviewBenchId
+            if (pendingSpot != null) {
+              syncToastMessage = "Connecté ! Validez votre spot"
+              showAddDialog = true
+            } else if (pendingReview != null) {
+              selectedBench = benches.find { it.id == pendingReview }
+              pendingReviewBenchId = null
+              syncToastMessage = "Connecté ! Validez votre avis"
+            } else {
+              syncToastMessage = "Connecté, vos contenus sont partagés !"
+            }
             delay(2500)
             syncToastMessage = null
           } catch (e: Exception) {
@@ -816,6 +939,19 @@ fun RateBenchMainScreen() {
         authError = null
         showAuthDialog = false
       }
+    )
+  }
+
+  // 6. DIALOGUE PUBLICATION ANONYME (brouillon gardé pré-rempli)
+  if (showAnonymousDialog) {
+    AnonymousPublishDialog(
+      pseudo = anonPseudo,
+      onPseudoChange = { anonPseudo = it },
+      onDiceClick = { anonPseudo = randomAnonymousPseudo() },
+      hasLocalMedia = anonHasMedia,
+      onLoginClick = { showAnonymousDialog = false; showAuthDialog = true },
+      onPublishAnonymous = { publishAnonymous(anonPseudo) },
+      onDismiss = { showAnonymousDialog = false }
     )
   }
 }

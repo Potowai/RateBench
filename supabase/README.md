@@ -15,6 +15,8 @@ l'appli partagent les mêmes bancs, avis et photos.
 1. Dans le projet : **SQL Editor → New query**
 2. Copier-coller tout le contenu de `migrations/001_schema.sql`
 3. **Run** → succès = 7 bancs + 9 avis insérés, buckets créés
+4. Puis copier-coller `migrations/002_anonymous.sql` → **Run**
+   (publication anonyme avec pseudo, sans compte)
 
 Vérification : **Table Editor** → `benches` (7 lignes), `reviews` (9 lignes) ;
 **Storage** → buckets `bench-photos` et `review-photos`.

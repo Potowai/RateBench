@@ -91,19 +91,21 @@ class SupabaseBenchRepository(
     userLng: Double
   ): List<BenchItem> {
     if (!isCloudEnabled) return localFallback.insertBench(bench, userLat, userLng)
-    val userId = auth.userId() ?: throw IllegalStateException("login_required")
-    val (key, bearer) = userAuth()
+    // Connecté : écriture authentifiée. Anonyme : clé publique + author_id NULL
+    // (policy "Création de banc anonyme", migration 002).
+    val userId = auth.userId()?.takeIf { auth.authToken() != null }
+    val (key, bearer) = if (userId != null) userAuth() else anonAuth()
 
-    val photoUrl = uploadIfLocal(bench.photoUrl, BENCH_BUCKET) ?: bench.photoUrl
+    val photoUrl = uploadIfLocal(bench.photoUrl, BENCH_BUCKET) ?: bench.photoUrl.takeIf { it.startsWith("http") }
 
     val payload = JSONObject()
       .put("title", bench.title)
       .put("description", bench.description)
       .put("latitude", bench.latitude)
       .put("longitude", bench.longitude)
-      .put("author_id", userId)
+      .put("author_id", userId ?: JSONObject.NULL)
       .put("author_name", bench.author.ifBlank { "Communauté" })
-      .put("photo_url", photoUrl)
+      .put("photo_url", photoUrl ?: "")
       .toString().toRequestBody(jsonMediaType)
 
     val inserted = postWithAuthRetry(
@@ -140,13 +142,15 @@ class SupabaseBenchRepository(
     userLng: Double
   ): Pair<BenchItem?, List<BenchItem>> {
     if (!isCloudEnabled) return localFallback.addReviewToBench(benchId, review, userLat, userLng)
-    val userId = auth.userId() ?: throw IllegalStateException("login_required")
-    val (key, bearer) = userAuth()
+    // Connecté : écriture authentifiée. Anonyme : clé publique + user_id NULL
+    // (policy "Création d'avis anonyme", migration 002).
+    val userId = auth.userId()?.takeIf { auth.authToken() != null }
+    val (key, bearer) = if (userId != null) userAuth() else anonAuth()
 
     val photoUrl = uploadIfLocal(review.photoUrl, REVIEW_BUCKET)
     val payload = JSONObject()
       .put("bench_id", benchId)
-      .put("user_id", userId)
+      .put("user_id", userId ?: JSONObject.NULL)
       .put("user_name", review.userName)
       .put("rating", review.rating)
       .put("comment", review.comment)

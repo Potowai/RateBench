@@ -58,6 +58,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.data.PublishDraftStore
 import com.example.model.BenchItem
 import com.example.ui.theme.AmberRating
 import com.example.ui.theme.Slate100
@@ -98,9 +99,11 @@ fun BenchDetailsModalBottomSheet(
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
   val context = LocalContext.current
   var isReviewing by remember { mutableStateOf(false) }
-  var myRating by remember { mutableStateOf(8.0f) }
-  var myComment by remember { mutableStateOf("") }
-  var selectedReviewPhotoUrl by remember { mutableStateOf<String?>(null) }
+  // Brouillon éventuel (rédigé avant la connexion) : formulaire pré-rempli
+  val reviewDraft = remember(bench.id) { PublishDraftStore(context).getReview(bench.id) }
+  var myRating by remember { mutableStateOf(reviewDraft?.rating ?: 8.0f) }
+  var myComment by remember { mutableStateOf(reviewDraft?.comment ?: "") }
+  var selectedReviewPhotoUrl by remember { mutableStateOf<String?>(reviewDraft?.photoUrl) }
   var showPhotoPickerPresets by remember { mutableStateOf(false) }
   val isVideo = isVideoUri(context, selectedReviewPhotoUrl)
 
@@ -324,7 +327,7 @@ fun BenchDetailsModalBottomSheet(
               )
             )
 
-            // Commentaire : saisie directe si connecté, sinon tap → création de compte
+            // Commentaire : saisie directe si connecté, sinon tap → brouillon + compte/anonyme
             if (isLoggedIn) {
               OutlinedTextField(
                 value = myComment,
@@ -342,7 +345,11 @@ fun BenchDetailsModalBottomSheet(
                 border = androidx.compose.foundation.BorderStroke(1.dp, Slate300),
                 modifier = Modifier
                   .fillMaxWidth()
-                  .clickable(onClick = onLoginClick)
+                  .clickable {
+                    // Brouillon gardé, la suite (connexion ou anonyme) est proposée après
+                    PublishDraftStore(context).saveReview(bench.id, myRating, "", selectedReviewPhotoUrl)
+                    onLoginClick()
+                  }
               ) {
                 Text(
                   text = "Touchez ici pour vous connecter et écrire votre avis…",
@@ -484,6 +491,8 @@ fun BenchDetailsModalBottomSheet(
               Button(
                 onClick = {
                   if (!isLoggedIn) {
+                    // Brouillon gardé, la suite (connexion ou anonyme) est proposée après
+                    PublishDraftStore(context).saveReview(bench.id, myRating, myComment, selectedReviewPhotoUrl)
                     onLoginClick()
                     return@Button
                   }

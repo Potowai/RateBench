@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.data.PublishDraftStore
 import com.example.ui.theme.Slate100
 import com.example.ui.theme.Slate300
 import com.example.ui.theme.Slate500
@@ -69,10 +70,12 @@ fun AddBenchModalDialog(
   onBenchAdded: (title: String, rating: Float, comment: String, photoUrl: String) -> Unit
 ) {
   val context = LocalContext.current
-  var title by remember { mutableStateOf("") }
-  var rating by remember { mutableStateOf(8.0f) }
-  var comment by remember { mutableStateOf("") }
-  var photoUrl by remember { mutableStateOf(sampleBenchPhotos.first()) }
+  // Brouillon éventuel (rédigé avant la connexion) : formulaire pré-rempli
+  val spotDraft = remember { PublishDraftStore(context).getSpot() }
+  var title by remember { mutableStateOf(spotDraft?.title ?: "") }
+  var rating by remember { mutableStateOf(spotDraft?.rating ?: 8.0f) }
+  var comment by remember { mutableStateOf(spotDraft?.comment ?: "") }
+  var photoUrl by remember { mutableStateOf(spotDraft?.photoUrl ?: sampleBenchPhotos.first()) }
   var showPhotoOptions by remember { mutableStateOf(false) }
   val isVideo = isVideoUri(context, photoUrl)
 
@@ -128,7 +131,11 @@ fun AddBenchModalDialog(
                 color = Slate800,
                 modifier = Modifier.weight(1f)
               )
-              TextButton(onClick = onLoginClick) {
+              TextButton(onClick = {
+                // Brouillon gardé, la suite (connexion ou anonyme) est proposée après
+                PublishDraftStore(context).saveSpot(title, rating, comment, photoUrl)
+                onLoginClick()
+              }) {
                 Text("Se connecter", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Slate900)
               }
             }
