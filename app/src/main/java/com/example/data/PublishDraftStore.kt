@@ -88,6 +88,19 @@ class PublishDraftStore(context: Context) {
   fun clearReview(benchId: String) {
     prefs.edit().remove("review_$benchId").apply()
   }
+
+  // ---------- Pseudo anonyme (conservé entre les sessions) ----------
+  /** Même pseudo anonyme réutilisé à chaque publication sans compte. */
+  fun getAnonPseudo(): String {
+    prefs.getString("anon_pseudo", null)?.takeIf { it.isNotBlank() }?.let { return it }
+    return randomAnonymousPseudo().also { setAnonPseudo(it) }
+  }
+
+  fun setAnonPseudo(pseudo: String) {
+    if (pseudo.isNotBlank()) {
+      prefs.edit().putString("anon_pseudo", pseudo).apply()
+    }
+  }
 }
 
 /** Pseudo anonyme français (modifiable par l'utilisateur). */

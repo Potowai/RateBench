@@ -99,6 +99,7 @@ import com.example.ui.components.AddBenchModalDialog
 import com.example.ui.components.AnonymousPublishDialog
 import com.example.ui.components.AuthDialog
 import com.example.ui.components.BenchDetailsModalBottomSheet
+import com.example.ui.components.OnboardingOverlay
 import com.example.ui.components.OpenStreetMapWebView
 import com.example.ui.components.benchesToJson
 import com.example.ui.theme.AmberRating
@@ -178,6 +179,10 @@ fun RateBenchMainScreen() {
   var pendingReviewBenchId by remember { mutableStateOf<String?>(null) }
   var anonPseudo by remember { mutableStateOf("") }
   var anonHasMedia by remember { mutableStateOf(false) }
+
+  // Onboarding affiché une seule fois (installation → premier spot)
+  val appPrefs = remember { context.getSharedPreferences("rate_bench_prefs", Context.MODE_PRIVATE) }
+  var showOnboarding by remember { mutableStateOf(!appPrefs.getBoolean("onboarding_seen", false)) }
 
   var webViewRef by remember { mutableStateOf<WebView?>(null) }
   var isMapReady by remember { mutableStateOf(false) }
@@ -282,7 +287,8 @@ fun RateBenchMainScreen() {
 
   /** Ouvre le dialogue anonyme/login en gardant le brouillon pré-rempli. */
   fun openAnonymousFlow() {
-    anonPseudo = randomAnonymousPseudo()
+    // Même pseudo anonyme conservé entre les sessions
+    anonPseudo = draftStore.getAnonPseudo()
     val spotPhoto = draftStore.getSpot()?.photoUrl
     val reviewPhoto = pendingReviewBenchId?.let { draftStore.getReview(it)?.photoUrl }
     anonHasMedia = spotPhoto?.startsWith("content://") == true ||
@@ -293,6 +299,7 @@ fun RateBenchMainScreen() {
   /** Publie le brouillon en attente sous le pseudo anonyme. */
   fun publishAnonymous(pseudo: String) {
     val safePseudo = pseudo.ifBlank { randomAnonymousPseudo() }
+    draftStore.setAnonPseudo(safePseudo)
     coroutineScope.launch {
       showAnonymousDialog = false
       try {
@@ -370,10 +377,10 @@ fun RateBenchMainScreen() {
     }
   }
 
-  // Chargement initial depuis la base de données distante + demande GPS
+  // Chargement initial + demande GPS (après l'onboarding si premier lancement)
   LaunchedEffect(Unit) {
     syncWithExternalDatabase(silent = true)
-    requestLocationOrFetch()
+    if (!showOnboarding) requestLocationOrFetch()
   }
 
   // Mise à jour de la carte dès qu'elle est prête ou que les bancs changent
@@ -949,12 +956,21 @@ fun RateBenchMainScreen() {
     AnonymousPublishDialog(
       pseudo = anonPseudo,
       onPseudoChange = { anonPseudo = it },
-      onDiceClick = { anonPseudo = randomAnonymousPseudo() },
+      onDiceClick = { anonPseudo = randomAnonymousPseudo().also { draftStore.setAnonPseudo(it) } },
       hasLocalMedia = anonHasMedia,
       onLoginClick = { showAnonymousDialog = false; showAuthDialog = true },
       onPublishAnonymous = { publishAnonymous(anonPseudo) },
       onDismiss = { showAnonymousDialog = false }
     )
+  }
+
+  // 7. ONBOARDING (une seule fois : installation → premier spot)
+  if (showOnboarding) {
+    OnboardingOverlay(onDone = {
+      showOnboarding = false
+      appPrefs.edit().putBoolean("onboarding_seen", true).apply()
+      requestLocationOrFetch()
+    })
   }
 }
 

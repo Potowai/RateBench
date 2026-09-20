@@ -17,8 +17,8 @@ android {
     applicationId = "com.aistudio.ratebench.kmpx"
     minSdk = 24
     targetSdk = 36
-    versionCode = 8
-    versionName = "1.5"
+    versionCode = 9
+    versionName = "1.6"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
