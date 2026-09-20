@@ -807,6 +807,7 @@ fun RateBenchMainScreen() {
           if (updatedBench != null) {
             selectedBench = updatedBench
           }
+          draftStore.clearReview(bench.id)
 
           // Mise à jour de la carte
           if (webViewRef != null && isMapReady) {
@@ -875,6 +876,7 @@ fun RateBenchMainScreen() {
           }
           benches = updatedList
           showAddDialog = false
+          draftStore.clearSpot()
 
           if (webViewRef != null && isMapReady) {
             val json = benchesToJson(updatedList)
