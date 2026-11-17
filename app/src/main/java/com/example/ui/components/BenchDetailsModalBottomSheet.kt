@@ -318,7 +318,7 @@ fun BenchDetailsModalBottomSheet(
             Slider(
               value = myRating,
               onValueChange = { myRating = it },
-              valueRange = 0f..10f,
+              valueRange = 1f..10f,
               steps = 9,
               colors = SliderDefaults.colors(
                 thumbColor = Slate900,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Navigation, User, LogOut, Compass, MapPin } from 'lucide-react';
+import { Plus, Navigation, User, LogOut, Compass } from 'lucide-react';
 import { BenchMap } from './components/BenchMap';
 import { AddBenchModal } from './components/AddBenchModal';
 import { BenchDetailsSheet } from './components/BenchDetailsSheet';

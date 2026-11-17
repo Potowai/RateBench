@@ -17,6 +17,10 @@ l'appli partagent les mêmes bancs, avis et photos.
 3. **Run** → succès = 7 bancs + 9 avis insérés, buckets créés
 4. Puis copier-coller `migrations/002_anonymous.sql` → **Run**
    (publication anonyme avec pseudo, sans compte)
+5. Enfin copier-coller `migrations/005_pwa_view.sql` → **Run**.
+   Cette vue `benches_with_stats` est utilisée par la **PWA** ; sans elle, la PWA
+   ne peut pas charger les bancs en mode cloud. (Les migrations 003/004 sont des
+   seeds optionnels.)
 
 Vérification : **Table Editor** → `benches` (7 lignes), `reviews` (9 lignes) ;
 **Storage** → buckets `bench-photos` et `review-photos`.
@@ -42,6 +46,9 @@ Vérification : **Table Editor** → `benches` (7 lignes), `reviews` (9 lignes) 
 ## 5. Fichiers
 
 - `migrations/001_schema.sql` — schéma complet rejouable (seed idempotent)
+- `migrations/002_anonymous.sql` — publication anonyme avec pseudo
+- `migrations/003_seed_benches.sql` / `004_seed_world.sql` — bancs initiaux (optionnels)
+- `migrations/005_pwa_view.sql` — vue `benches_with_stats` utilisée par la PWA
 - Côté appli : `app/src/main/java/com/example/data/supabase/`
   (`SupabaseConfig`, `SupabaseApi`, `SupabaseAuthRepository`,
   `SupabaseBenchRepository` avec repli local automatique)

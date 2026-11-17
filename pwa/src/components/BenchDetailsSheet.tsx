@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Star, X, MapPin, Navigation, MessageSquare, Plus, Loader2 } from 'lucide-react';
 import { Bench, Review, UserLocation } from '../types';
 import { supabase } from '../lib/supabase';
+import { calculateDistanceMeters, formatDistance } from '../lib/geo';
 
 interface BenchDetailsSheetProps {
   bench: Bench | null;
@@ -9,29 +10,6 @@ interface BenchDetailsSheetProps {
   userLocation: UserLocation | null;
   onReviewAdded: () => void;
   userId?: string;
-}
-
-// Calcul de distance euclidienne / haversine en mètres
-function calculateDistanceMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371e3; // Rayon terre en mètres
-  const φ1 = (lat1 * Math.PI) / 180;
-  const φ2 = (lat2 * Math.PI) / 180;
-  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
-
-  const a =
-    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  return Math.round(R * c);
-}
-
-function formatDistance(meters: number): string {
-  if (meters < 1000) {
-    return `${meters} m`;
-  }
-  return `${(meters / 1000).toFixed(1)} km`;
 }
 
 export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
@@ -47,13 +25,25 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
   const [newRating, setNewRating] = useState(8);
   const [newComment, setNewComment] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [reviewError, setReviewError] = useState<string | null>(null);
 
   useEffect(() => {
     if (bench) {
       fetchReviews(bench.id);
       setIsAddingReview(false);
+      setReviewError(null);
     }
   }, [bench]);
+
+  // Fermeture au clavier (accessibilité)
+  useEffect(() => {
+    if (!bench) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [bench, onClose]);
 
   const fetchReviews = async (benchId: string) => {
     setLoadingReviews(true);
@@ -92,8 +82,9 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
       setIsAddingReview(false);
       fetchReviews(bench.id);
       onReviewAdded();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erreur lors de l'ajout de l'avis:", err);
+      setReviewError(err?.message || "Impossible de publier l'avis. Réessayez.");
     } finally {
       setSubmittingReview(false);
     }
@@ -106,8 +97,18 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
     : null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/40 backdrop-blur-xs p-0 sm:p-4">
-      <div className="w-full max-w-lg bg-white rounded-t-3xl sm:rounded-2xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/40 backdrop-blur-xs p-0 sm:p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="bench-details-title"
+        className="w-full max-w-lg bg-white rounded-t-3xl sm:rounded-2xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden"
+      >
         {/* Handle tactile */}
         <div className="w-full pt-3 pb-1 flex justify-center sm:hidden">
           <div className="w-12 h-1.5 bg-slate-300 rounded-full"></div>
@@ -131,6 +132,7 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
           {/* Bouton fermeture */}
           <button
             onClick={onClose}
+            aria-label="Fermer la fiche du banc"
             className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center rounded-full bg-slate-900/60 hover:bg-slate-900 text-white backdrop-blur-sm transition"
           >
             <X className="w-4 h-4" />
@@ -151,7 +153,7 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
           {/* Titre et distance */}
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="text-xl font-bold text-slate-900">
+              <h2 id="bench-details-title" className="text-xl font-bold text-slate-900">
                 {bench.title || 'Banc sans nom'}
               </h2>
               <div className="flex items-center gap-3 text-xs text-slate-500 mt-1">
@@ -201,21 +203,28 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
             {isAddingReview && (
               <form onSubmit={handleAddReview} className="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-slate-600">Votre note :</span>
+                  <label htmlFor="review-rating" className="text-xs font-medium text-slate-600">Votre note :</label>
                   <div className="flex items-center gap-1 font-bold text-slate-800 text-sm">
-                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" aria-hidden="true" />
                     <span>{newRating}/10</span>
                   </div>
                 </div>
                 <input
+                  id="review-rating"
                   type="range"
-                  min="0"
+                  min="1"
                   max="10"
                   step="1"
                   value={newRating}
                   onChange={(e) => setNewRating(Number(e.target.value))}
+                  aria-valuetext={`${newRating} sur 10`}
                   className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-800"
                 />
+                {reviewError && (
+                  <p role="alert" className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-2.5 py-2">
+                    {reviewError}
+                  </p>
+                )}
                 <textarea
                   rows={2}
                   placeholder="Votre ressenti (vue, calme, propreté...)"

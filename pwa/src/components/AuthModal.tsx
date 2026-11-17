@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Mail, Lock, Loader2, Sparkles } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
@@ -16,6 +16,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuc
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -41,7 +50,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuc
           password,
         });
         if (signUpError) throw signUpError;
-        if (data.user) {
+        // Une session n'existe que si la confirmation d'email n'est pas requise.
+        if (data.session && data.user) {
           onAuthSuccess(data.user);
           onClose();
         } else {
@@ -66,11 +76,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuc
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl p-6 shadow-2xl animate-in zoom-in-95 duration-150">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-modal-title"
+        className="w-full max-w-sm bg-white rounded-2xl p-6 shadow-2xl"
+      >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-bold text-slate-900">
+            <h2 id="auth-modal-title" className="text-lg font-bold text-slate-900">
               {isMagicLink ? 'Connexion sans mot de passe' : isSignUp ? 'Rejoindre Rate Bench' : 'Connexion'}
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -79,6 +99,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuc
           </div>
           <button
             onClick={onClose}
+            aria-label="Fermer la fenêtre de connexion"
             className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100"
           >
             <X className="w-4 h-4" />
@@ -99,10 +120,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuc
 
         <form onSubmit={handleAuth} className="space-y-3">
           <div>
-            <label className="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Email</label>
+            <label htmlFor="auth-email" className="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Email</label>
             <div className="relative">
               <Mail className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
               <input
+                id="auth-email"
                 type="email"
                 required
                 placeholder="votre@email.com"
@@ -115,10 +137,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuc
 
           {!isMagicLink && (
             <div>
-              <label className="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Mot de passe</label>
+              <label htmlFor="auth-password" className="block text-[11px] font-semibold text-slate-600 uppercase mb-1">Mot de passe</label>
               <div className="relative">
                 <Lock className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
                 <input
+                  id="auth-password"
                   type="password"
                   required
                   placeholder="••••••••"

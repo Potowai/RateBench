@@ -85,12 +85,13 @@ export const BenchMap: React.FC<BenchMapProps> = ({
         zoom={15}
         zoomControl={false}
         className="w-full h-full"
-        attributionControl={false}
       >
-        {/* Tuiles cartographiques propres et sobres (CartoDB Positron / OSM style) */}
+        {/* Tuiles cartographiques sobres (CartoDB Voyager). Attribution conservée
+            conformément aux conditions d'utilisation d'OpenStreetMap / CARTO. */}
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           maxZoom={19}
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
         />
 
         {/* Contrôleur de recentrage */}

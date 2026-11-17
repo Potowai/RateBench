@@ -15,4 +15,12 @@
 .cxx
 local.properties
 .env
+.env.*
+!.env.example
 debug.keystore
+
+# PWA / Node
+node_modules/
+dist/
+pwa/dist/
+*.local

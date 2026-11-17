@@ -1,5 +1,16 @@
 -- ==============================================================================
--- RATE BENCH - SCHÉMA DE BASE DE DONNÉES SUPABASE (PostgreSQL + PostGIS)
+-- ANCIEN SCHÉMA PWA — CONSERVÉ POUR RÉFÉRENCE / MIGRATION
+-- ==============================================================================
+-- ⚠️  CE FICHIER EST DÉPRÉCIÉ. Il décrivait un backend spécifique à la PWA,
+--     incompatible avec celui de l'application Android.
+--
+--     Le schéma CANONIQUE, utilisé désormais par les DEUX clients, se trouve
+--     dans ../supabase/migrations/ (001 à 005). Pour une nouvelle installation,
+--     appliquez ces migrations en suivant supabase/README.md, en particulier
+--     005_pwa_view.sql qui recrée la vue `benches_with_stats` attendue par la PWA.
+--
+--     Ce fichier reste ici uniquement pour aider les installations historiques
+--     à migrer. Ne l'appliquez pas sur un projet neuf.
 -- ==============================================================================
 
 -- 1. Activation de l'extension PostGIS pour la gestion spatiale avancée

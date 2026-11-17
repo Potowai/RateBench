@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'icon.svg', 'masked-icon.svg'],
       manifest: {
         name: 'Rate Bench - Bancs & Spots de Repos',
         short_name: 'Rate Bench',
@@ -41,11 +41,12 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
         runtimeCaching: [
           {
-            // Cache tuiles OpenStreetMap pour consultation hors-ligne des cartes récentes
-            urlPattern: /^https:\/\/[a-c]\.tile\.openstreetmap\.org\/.*/i,
+            // Cache des tuiles CartoDB (fournisseur réellement utilisé par BenchMap)
+            // pour une consultation hors-ligne des zones déjà visitées.
+            urlPattern: /^https:\/\/[a-d]\.basemaps\.cartocdn\.com\/.*/i,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'osm-tiles-cache',
+              cacheName: 'ratebench-tiles-cache',
               expiration: {
                 maxEntries: 400,
                 maxAgeSeconds: 60 * 60 * 24 * 7 // 7 jours

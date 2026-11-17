@@ -204,7 +204,7 @@ fun RateBenchMainScreen() {
         // Rafraîchir les marqueurs de la carte Leaflet
         if (webViewRef != null && isMapReady) {
           val json = benchesToJson(syncedBenches)
-          webViewRef?.evaluateJavascript("setBenches('$json');", null)
+          webViewRef?.evaluateJavascript("setBenches(${org.json.JSONObject.quote(json)});", null)
           webViewRef?.evaluateJavascript("setUserLocation($userLat, $userLng);", null)
         }
 
@@ -331,7 +331,7 @@ fun RateBenchMainScreen() {
           benches = updatedList
           if (webViewRef != null && isMapReady) {
             val json = benchesToJson(updatedList)
-            webViewRef?.evaluateJavascript("setBenches('$json');", null)
+            webViewRef?.evaluateJavascript("setBenches(${org.json.JSONObject.quote(json)});", null)
             webViewRef?.evaluateJavascript("centerMap(${newBench.latitude}, ${newBench.longitude}, 17);", null)
           }
           syncToastMessage = "Spot partagé en anonyme !"
@@ -356,7 +356,7 @@ fun RateBenchMainScreen() {
             }
             if (webViewRef != null && isMapReady) {
               val json = benchesToJson(updatedList)
-              webViewRef?.evaluateJavascript("setBenches('$json');", null)
+              webViewRef?.evaluateJavascript("setBenches(${org.json.JSONObject.quote(json)});", null)
             }
             syncToastMessage = "Avis partagé en anonyme !"
           }
@@ -386,7 +386,7 @@ fun RateBenchMainScreen() {
   LaunchedEffect(benches, isMapReady) {
     if (isMapReady && webViewRef != null && benches.isNotEmpty()) {
       val json = benchesToJson(benches)
-      webViewRef?.evaluateJavascript("setBenches('$json');", null)
+      webViewRef?.evaluateJavascript("setBenches(${org.json.JSONObject.quote(json)});", null)
       webViewRef?.evaluateJavascript("setUserLocation($userLat, $userLng);", null)
     }
   }
@@ -638,7 +638,7 @@ fun RateBenchMainScreen() {
           onMapReady = {
             isMapReady = true
             val json = benchesToJson(benches)
-            webViewRef?.evaluateJavascript("setBenches('$json');", null)
+            webViewRef?.evaluateJavascript("setBenches(${org.json.JSONObject.quote(json)});", null)
             webViewRef?.evaluateJavascript("setUserLocation($userLat, $userLng);", null)
           },
           onBenchClicked = { benchId ->
@@ -804,7 +804,7 @@ fun RateBenchMainScreen() {
           // Mise à jour de la carte
           if (webViewRef != null && isMapReady) {
             val json = benchesToJson(updatedList)
-            webViewRef?.evaluateJavascript("setBenches('$json');", null)
+            webViewRef?.evaluateJavascript("setBenches(${org.json.JSONObject.quote(json)});", null)
           }
 
           syncToastMessage = "Avis & photo enregistrés dans la base externe !"
@@ -872,7 +872,7 @@ fun RateBenchMainScreen() {
 
           if (webViewRef != null && isMapReady) {
             val json = benchesToJson(updatedList)
-            webViewRef?.evaluateJavascript("setBenches('$json');", null)
+            webViewRef?.evaluateJavascript("setBenches(${org.json.JSONObject.quote(json)});", null)
             webViewRef?.evaluateJavascript("centerMap(${newBench.latitude}, ${newBench.longitude}, 17);", null)
           }
 

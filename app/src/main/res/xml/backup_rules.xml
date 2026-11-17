@@ -1,13 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   Sample backup rules file; uncomment and customize as necessary.
-   See https://developer.android.com/guide/topics/data/autobackup
-   for details.
-   Note: This file is ignored for devices older than API 31
-   See https://developer.android.com/about/versions/12/backup-restore
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Sauvegardes Android (< API 31). Les jetons d'authentification Supabase sont
+   stockés dans rate_bench_supabase_auth.xml : ils ne doivent jamais être
+   envoyés dans une sauvegarde cloud.
 -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
+    <exclude domain="sharedpref" path="rate_bench_supabase_auth.xml" />
 </full-backup-content>
