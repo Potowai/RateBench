@@ -65,6 +65,24 @@ cd pwa && npm run build
 
 Caddy sert le dossier statique en lecture seule ; aucun redémarrage du serveur web n'est nécessaire.
 
+### Accès global (sans Tailscale)
+
+Une seconde route est exposée publiquement via un **Cloudflare Quick Tunnel**
+(service `cloudflared-ratebench.service`) : elle renvoie vers l'origine locale
+`http://127.0.0.1:4097` servie par Caddy. Aucun port entrant n'est ouvert sur le serveur.
+
+Récupérer l'URL publique actuelle :
+
+```bash
+journalctl --user -u cloudflared-ratebench.service --no-pager | grep -oE 'https://[a-z0-9-]+\.trycloudflare\.com' | tail -1
+```
+
+⚠️ Un *quick tunnel* reçoit un nom aléatoire qui **change à chaque redémarrage**
+du service. Pour une URL stable (`ratebench.potowai.tech` en public), il faut un
+tunnel nommé Cloudflare — ce qui nécessite un jeton API avec la permission
+`Tunnel:Edit` ou un `cloudflared tunnel login` interactif. La configuration Caddy
+et le DNS sont déjà prêts ; il ne manque que cette autorisation.
+
 ## Démarrage rapide
 
 ### PWA (web)
