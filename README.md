@@ -52,6 +52,19 @@ Le projet est **open-source** : vous pouvez l'utiliser, l'étudier, le modifier 
 
 Les deux clients (Android et PWA) parlent au **même backend Supabase** : le schéma canonique de `supabase/migrations/` et sa vue `benches_with_stats` (migration 005). La lecture est publique (RLS), l'écriture avec compte est protégée, et chaque utilisateur ne modifie que ses propres contenus. L'application Android propose en plus une publication anonyme avec pseudonyme.
 
+## Démo en ligne
+
+Une instance de démonstration (mode local, sans backend configuré) tourne sur :
+**https://ratebench.potowai.tech** — accessible depuis le tailnet.
+
+Elle sert le contenu de `pwa/dist` via Caddy. Pour la mettre à jour après un changement :
+
+```bash
+cd pwa && npm run build
+```
+
+Caddy sert le dossier statique en lecture seule ; aucun redémarrage du serveur web n'est nécessaire.
+
 ## Démarrage rapide
 
 ### PWA (web)
