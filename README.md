@@ -1,8 +1,12 @@
-# RateBench
+# Rate Bench
+
+> *« Il faut rater le bench, c'est bien. »*
 
 > **English:** RateBench is a free and open-source, mobile-first app for finding, rating and photographing remarkable public benches and resting spots. Maps, community reviews, photos — Android app, installable PWA and a shared Supabase backend.
 
 **RateBench** est une application libre et open-source pour repérer, noter et photographier les bancs publics et les spots de repos remarquables. Elle est pensée « mobile first », fonctionne hors ligne en mode démonstration, et se synchronise avec un backend Supabase partagé dès que les clés sont fournies.
+
+Créé par **Alexis Fiolleau** et ouvert aux contributions de la communauté.
 
 ![Android](https://img.shields.io/badge/Android-Kotlin%20%2F%20Compose-3DDC84?style=flat-square)
 ![PWA](https://img.shields.io/badge/PWA-React%20%2F%20Vite-646CFF?style=flat-square)
@@ -16,11 +20,13 @@
 - [Pourquoi ?](#pourquoi-)
 - [Fonctionnalités](#fonctionnalités)
 - [Architecture](#architecture)
+- [Démo en ligne](#démo-en-ligne)
 - [Démarrage rapide](#démarrage-rapide)
 - [Configuration](#configuration)
 - [Backend / base de données](#backend--base-de-données)
 - [Contribuer](#contribuer)
 - [Sécurité](#sécurité)
+- [Feuille de route](#feuille-de-route)
 - [Licence](#licence)
 
 ## Pourquoi ?
@@ -36,7 +42,7 @@ Le projet est **open-source** : vous pouvez l'utiliser, l'étudier, le modifier 
 - ⭐ **Avis notés de 1 à 10**, avec photo optionnelle et moyenne recalculée automatiquement
 - 🔐 **Comptes Supabase** (inscription automatique au premier login) ; lecture publique et écriture avec compte
 - 👤 **Pseudonyme anonyme** conservé localement pour les publications sans compte (application Android)
-- 📴 **Mode démonstration** fonctionnel sans configuration (bancs d'exemple intégrés)
+- 📴 **Mode démonstration** fonctionnel sans configuration (55 bancs réels intégrés)
 - 📲 **PWA installable** (Android / iOS) et **application Android native** en Kotlin
 - 🧪 **CI GitHub Actions** : tests unitaires JVM, build debug sur PR, release APK signé sur tag `v*`
 
@@ -103,7 +109,7 @@ npm install
 npm run dev
 ```
 
-Ouvrez l'URL affichée par Vite. Sans configuration Supabase, l'application démarre en **mode démonstration** avec quelques bancs d'exemple — aucune clé requise.
+Ouvrez l'URL affichée par Vite. Sans configuration Supabase, l'application démarre en **mode démonstration** avec les bancs réels intégrés — aucune clé requise.
 
 Pour activer le mode cloud, copiez `pwa/.env.example` vers `pwa/.env` et renseignez vos clés :
 
@@ -113,7 +119,7 @@ cp pwa/.env.example pwa/.env
 # VITE_SUPABASE_ANON_KEY=votre_cle_anon_publique
 ```
 
-Puis `npm run build` pour générer le PWA dans `pwa/dist`.
+Puis `npm test` et `npm run build` pour générer la PWA dans `pwa/dist`.
 
 ### Application Android
 
@@ -172,7 +178,7 @@ Le projet est ouvert et les contributions sont bienvenues (voir [CONTRIBUTING.md
 
 ## Licence
 
-Distribué sous licence [MIT](LICENSE). © 2026 RateBench contributors.
+Distribué sous licence [MIT](LICENSE). © 2026 Alexis Fiolleau et les contributeurs RateBench.
 
 ---
 
