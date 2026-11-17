@@ -49,6 +49,7 @@ Vérification : **Table Editor** → `benches` (7 lignes), `reviews` (9 lignes) 
 - `migrations/002_anonymous.sql` — publication anonyme avec pseudo
 - `migrations/003_seed_benches.sql` / `004_seed_world.sql` — bancs initiaux (optionnels)
 - `migrations/005_pwa_view.sql` — vue `benches_with_stats` utilisée par la PWA
+- `migrations/006_seed_real_benches.sql` — 55 bancs réels (OSM + Commons) : France (25), Nouvelle-Zélande (15), monde (15)
 - Côté appli : `app/src/main/java/com/example/data/supabase/`
   (`SupabaseConfig`, `SupabaseApi`, `SupabaseAuthRepository`,
   `SupabaseBenchRepository` avec repli local automatique)

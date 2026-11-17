@@ -6,43 +6,10 @@ import { BenchDetailsSheet } from './components/BenchDetailsSheet';
 import { AuthModal } from './components/AuthModal';
 import { Bench, UserLocation } from './types';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
-
-// Données de démonstration réalistes pour test immédiat hors-ligne ou avant configuration Supabase
-const INITIAL_DEMO_BENCHES: Bench[] = [
-  {
-    id: 'demo-1',
-    created_at: new Date().toISOString(),
-    title: 'Banc face au coucher de soleil sur la Seine',
-    latitude: 48.8575,
-    longitude: 2.3514,
-    avg_rating: 9.2,
-    review_count: 14,
-    cover_photo_url: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'demo-2',
-    created_at: new Date().toISOString(),
-    title: 'Spot ombragé sous les platanes du canal',
-    latitude: 48.8682,
-    longitude: 2.3644,
-    avg_rating: 8.5,
-    review_count: 8,
-    cover_photo_url: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'demo-3',
-    created_at: new Date().toISOString(),
-    title: 'Banc en fer forgé du square caché',
-    latitude: 48.8530,
-    longitude: 2.3499,
-    avg_rating: 7.8,
-    review_count: 5,
-    cover_photo_url: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=800&q=80',
-  },
-];
+import { WORLD_BENCHES } from './data/benches';
 
 export const App: React.FC = () => {
-  const [benches, setBenches] = useState<Bench[]>(INITIAL_DEMO_BENCHES);
+  const [benches, setBenches] = useState<Bench[]>(WORLD_BENCHES);
   const [selectedBench, setSelectedBench] = useState<Bench | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -111,10 +78,10 @@ export const App: React.FC = () => {
         }
       }
       // Conserver ou actualiser les bancs avec les données de démo si base vide
-      setBenches(INITIAL_DEMO_BENCHES);
+      setBenches(WORLD_BENCHES);
     } catch (err) {
       console.warn('Utilisation des données locales de démo:', err);
-      setBenches(INITIAL_DEMO_BENCHES);
+      setBenches(WORLD_BENCHES);
     }
   };
 
