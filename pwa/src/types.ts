@@ -8,6 +8,8 @@ export interface Bench {
   avg_rating?: number;
   review_count?: number;
   cover_photo_url?: string | null;
+  /** Galerie : plusieurs photos du même banc (migration SQL 007). */
+  photos?: string[];
   distance_meters?: number | null;
 }
 
@@ -16,7 +18,8 @@ export interface Review {
   bench_id: string;
   user_id?: string | null;
   user_email?: string | null;
-  rating: number; // 0 to 10
+  user_name?: string | null;
+  rating: number; // 1 to 10
   comment?: string | null;
   photo_url?: string | null;
   created_at: string;

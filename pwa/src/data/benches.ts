@@ -1,5 +1,5 @@
 // Bancs réels : coordonnées OpenStreetMap, photos Wikimedia Commons.
-// Les notes et compteurs sont des valeurs de démonstration.
+// Plusieurs photos par banc ; notes/compteurs = valeurs de démonstration.
 import type { Bench } from '../types';
 
 export const WORLD_BENCHES: Bench[] = [
@@ -12,6 +12,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.3,
     review_count: 31,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/A_bench_in_Lewes_Castle_Gun_Garden.jpg/960px-A_bench_in_Lewes_Castle_Gun_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/A_bench_in_Lewes_Castle_Gun_Garden.jpg/960px-A_bench_in_Lewes_Castle_Gun_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG/960px-A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg/960px-Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-002',
@@ -22,6 +27,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.0,
     review_count: 4,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG/960px-A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Bench_at_riverbanks_zoo_garden_5273.jpg/960px-Bench_at_riverbanks_zoo_garden_5273.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg/960px-Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg/960px-Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-003',
@@ -32,6 +42,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.7,
     review_count: 15,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg/960px-Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg/960px-Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Carved_Poppies_on_wooden_bench_-_geograph.org.uk_-_7041428.jpg/960px-Carved_Poppies_on_wooden_bench_-_geograph.org.uk_-_7041428.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7041427.jpg/960px-Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7041427.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-004',
@@ -42,6 +57,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.4,
     review_count: 26,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Bench_at_riverbanks_zoo_garden_5273.jpg/960px-Bench_at_riverbanks_zoo_garden_5273.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7062505.jpg/960px-Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7062505.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Chirk_Castle_carved_into_the_wooden_bench_-_geograph.org.uk_-_7041429.jpg/960px-Chirk_Castle_carved_into_the_wooden_bench_-_geograph.org.uk_-_7041429.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://upload.wikimedia.org/wikipedia/commons/6/6f/Corner_bench_in_the_Urn_Garden_at_Chartwell_-_geograph.org.uk_-_1422229.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    ],
   },
   {
     id: 'seed-005',
@@ -52,6 +72,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.7,
     review_count: 20,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg/960px-Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Covid-19_pandemic_Downhills_Park_Ornamental_Garden_bench_sign_Tottenham_London_1.jpg/960px-Covid-19_pandemic_Downhills_Park_Ornamental_Garden_bench_sign_Tottenham_London_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_01.jpg/960px-Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_02.jpg/960px-Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-006',
@@ -62,6 +87,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.4,
     review_count: 31,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg/960px-Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Feeringbury_Manor_Thakeham_Bench_Lutyens_Bench%2C_Feering_Essex_England.jpg/960px-Feeringbury_Manor_Thakeham_Bench_Lutyens_Bench%2C_Feering_Essex_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Fern_on_a_wooden_bench_before_a_stone_wall%2C_Portland_Japanese_Garden.jpg/960px-Fern_on_a_wooden_bench_before_a_stone_wall%2C_Portland_Japanese_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_1.jpg/960px-Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-007',
@@ -72,6 +102,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.6,
     review_count: 4,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg/960px-Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_2.jpg/960px-Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Front_view_of_a_wooden_outdoor_bench_in_Singapore_Botanic_Gardens_with_plants_in_sunshine_and_blue_sky.jpg/960px-Front_view_of_a_wooden_outdoor_bench_in_Singapore_Botanic_Gardens_with_plants_in_sunshine_and_blue_sky.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Garden_bench_in_Nuthurst%2C_West_Sussex%2C_England_1.jpg/960px-Garden_bench_in_Nuthurst%2C_West_Sussex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-008',
@@ -82,6 +117,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.1,
     review_count: 29,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Carved_Poppies_on_wooden_bench_-_geograph.org.uk_-_7041428.jpg/960px-Carved_Poppies_on_wooden_bench_-_geograph.org.uk_-_7041428.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_01.jpg/960px-Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_02.jpg/960px-Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Garden_lawn_bench_Waterperry_Gardens_Oxfordshire_England.jpg/960px-Garden_lawn_bench_Waterperry_Gardens_Oxfordshire_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-009',
@@ -92,6 +132,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.8,
     review_count: 40,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7041427.jpg/960px-Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7041427.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Garden_urn_and_bench_Gibberd_Garden_Harlow_Essex_England_2025_06.jpg/960px-Garden_urn_and_bench_Gibberd_Garden_Harlow_Essex_England_2025_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Garden_wooden_bench_Heyrons_High_Easter_Essex_01.jpg/960px-Garden_wooden_bench_Heyrons_High_Easter_Essex_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Lawn_bench_Capel_Manor_College_Gardens_Enfield_London_England_01.jpg/960px-Lawn_bench_Capel_Manor_College_Gardens_Enfield_London_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-010',
@@ -102,6 +147,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.5,
     review_count: 13,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7062505.jpg/960px-Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7062505.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Lublin-UMCS-Botanical-Garden-bench-181012-1.jpg/960px-Lublin-UMCS-Botanical-Garden-bench-181012-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Lublin-UMCS-Botanical-Garden-bench-181012-2.jpg/960px-Lublin-UMCS-Botanical-Garden-bench-181012-2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Man_on_bench_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England.jpg/960px-Man_on_bench_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-011',
@@ -112,6 +162,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.2,
     review_count: 30,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Chirk_Castle_carved_into_the_wooden_bench_-_geograph.org.uk_-_7041429.jpg/960px-Chirk_Castle_carved_into_the_wooden_bench_-_geograph.org.uk_-_7041429.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Outdoor_wooden_bench_in_Singapore_Botanic_Gardens_at_golden_hour.jpg/960px-Outdoor_wooden_bench_in_Singapore_Botanic_Gardens_at_golden_hour.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Pembroke_Lodge_garden%2C_Daniel_Hearsum%27s_bench.jpg/960px-Pembroke_Lodge_garden%2C_Daniel_Hearsum%27s_bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Pembroke_Lodge_garden%2C_John_%27K_J%27_Sommerfeld%27s_bench.jpg/960px-Pembroke_Lodge_garden%2C_John_%27K_J%27_Sommerfeld%27s_bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-012',
@@ -122,6 +177,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.9,
     review_count: 3,
     cover_photo_url: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Corner_bench_in_the_Urn_Garden_at_Chartwell_-_geograph.org.uk_-_1422229.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Rackets_Court_wooden_bench_in_Copped_Hall_Gardens%2C_Epping%2C_Essex%2C_England.jpg/960px-Rackets_Court_wooden_bench_in_Copped_Hall_Gardens%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Remembrance_bench_in_a_garden.jpg/960px-Remembrance_bench_in_a_garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Simpson_Garden_Benches_Close.jpg/960px-Simpson_Garden_Benches_Close.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-013',
@@ -132,6 +192,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.6,
     review_count: 14,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Covid-19_pandemic_Downhills_Park_Ornamental_Garden_bench_sign_Tottenham_London_1.jpg/960px-Covid-19_pandemic_Downhills_Park_Ornamental_Garden_bench_sign_Tottenham_London_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Simpson_Garden_Park_Bench.jpg/960px-Simpson_Garden_Park_Bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Small_garden_and_wooden_bench_at_east_end_of_ground_floor_inside_The_Mall_Boronia_in_Boronia%2C_Melbourne.jpg/960px-Small_garden_and_wooden_bench_at_east_end_of_ground_floor_inside_The_Mall_Boronia_in_Boronia%2C_Melbourne.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/St_Alphage_Garden_02_-_benches_by_wall.jpg/960px-St_Alphage_Garden_02_-_benches_by_wall.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-014',
@@ -142,6 +207,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.2,
     review_count: 25,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_01.jpg/960px-Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://upload.wikimedia.org/wikipedia/commons/4/49/Thorpe_Lodge_%28BandB%29_-_bench_and_gardens_-_geograph.org.uk_-_833902.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Upcycled_Outdoor_Garden_Bench_from_Reclaimed_Materials.jpg/960px-Upcycled_Outdoor_Garden_Bench_from_Reclaimed_Materials.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://upload.wikimedia.org/wikipedia/commons/a/a5/Wet_Bench%2C_Wallington_Walled_Garden_-_geograph.org.uk_-_976538.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    ],
   },
   {
     id: 'seed-015',
@@ -152,6 +222,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.4,
     review_count: 36,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_02.jpg/960px-Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/Wood_and_cast_iron_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg/960px-Wood_and_cast_iron_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Wooden_bench_inLady_Wraxall%27s_garden_-_geograph.org.uk_-_7071675.jpg/960px-Wooden_bench_inLady_Wraxall%27s_garden_-_geograph.org.uk_-_7071675.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Wooden_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg/960px-Wooden_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-016',
@@ -162,6 +237,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.1,
     review_count: 9,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Feeringbury_Manor_Thakeham_Bench_Lutyens_Bench%2C_Feering_Essex_England.jpg/960px-Feeringbury_Manor_Thakeham_Bench_Lutyens_Bench%2C_Feering_Essex_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Wooden_bench_in_Crickhowell_Library_Community_Garden_-_geograph.org.uk_-_6694244.jpg/960px-Wooden_bench_in_Crickhowell_Library_Community_Garden_-_geograph.org.uk_-_6694244.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/Wooden_bench_in_a_blooming_garden_%E2%80%93_Spring_in_Kuwait.jpg/960px-Wooden_bench_in_a_blooming_garden_%E2%80%93_Spring_in_Kuwait.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Wooden_garden_bench_and_trellises.jpg/960px-Wooden_garden_bench_and_trellises.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-017',
@@ -172,6 +252,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.4,
     review_count: 27,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Fern_on_a_wooden_bench_before_a_stone_wall%2C_Portland_Japanese_Garden.jpg/960px-Fern_on_a_wooden_bench_before_a_stone_wall%2C_Portland_Japanese_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/A_bench_in_Lewes_Castle_Gun_Garden.jpg/960px-A_bench_in_Lewes_Castle_Gun_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG/960px-A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg/960px-Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-018',
@@ -182,6 +267,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.6,
     review_count: 38,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_1.jpg/960px-Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Bench_at_riverbanks_zoo_garden_5273.jpg/960px-Bench_at_riverbanks_zoo_garden_5273.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg/960px-Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg/960px-Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-019',
@@ -192,6 +282,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.3,
     review_count: 11,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_2.jpg/960px-Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg/960px-Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Carved_Poppies_on_wooden_bench_-_geograph.org.uk_-_7041428.jpg/960px-Carved_Poppies_on_wooden_bench_-_geograph.org.uk_-_7041428.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7041427.jpg/960px-Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7041427.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-020',
@@ -202,6 +297,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.3,
     review_count: 31,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Front_view_of_a_wooden_outdoor_bench_in_Singapore_Botanic_Gardens_with_plants_in_sunshine_and_blue_sky.jpg/960px-Front_view_of_a_wooden_outdoor_bench_in_Singapore_Botanic_Gardens_with_plants_in_sunshine_and_blue_sky.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7062505.jpg/960px-Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7062505.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Chirk_Castle_carved_into_the_wooden_bench_-_geograph.org.uk_-_7041429.jpg/960px-Chirk_Castle_carved_into_the_wooden_bench_-_geograph.org.uk_-_7041429.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://upload.wikimedia.org/wikipedia/commons/6/6f/Corner_bench_in_the_Urn_Garden_at_Chartwell_-_geograph.org.uk_-_1422229.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    ],
   },
   {
     id: 'seed-021',
@@ -212,6 +312,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.0,
     review_count: 4,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Garden_bench_in_Nuthurst%2C_West_Sussex%2C_England_1.jpg/960px-Garden_bench_in_Nuthurst%2C_West_Sussex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Covid-19_pandemic_Downhills_Park_Ornamental_Garden_bench_sign_Tottenham_London_1.jpg/960px-Covid-19_pandemic_Downhills_Park_Ornamental_Garden_bench_sign_Tottenham_London_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_01.jpg/960px-Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_02.jpg/960px-Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-022',
@@ -222,6 +327,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.7,
     review_count: 15,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_01.jpg/960px-Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Feeringbury_Manor_Thakeham_Bench_Lutyens_Bench%2C_Feering_Essex_England.jpg/960px-Feeringbury_Manor_Thakeham_Bench_Lutyens_Bench%2C_Feering_Essex_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Fern_on_a_wooden_bench_before_a_stone_wall%2C_Portland_Japanese_Garden.jpg/960px-Fern_on_a_wooden_bench_before_a_stone_wall%2C_Portland_Japanese_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_1.jpg/960px-Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-023',
@@ -232,6 +342,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.2,
     review_count: 30,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_02.jpg/960px-Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_2.jpg/960px-Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Front_view_of_a_wooden_outdoor_bench_in_Singapore_Botanic_Gardens_with_plants_in_sunshine_and_blue_sky.jpg/960px-Front_view_of_a_wooden_outdoor_bench_in_Singapore_Botanic_Gardens_with_plants_in_sunshine_and_blue_sky.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Garden_bench_in_Nuthurst%2C_West_Sussex%2C_England_1.jpg/960px-Garden_bench_in_Nuthurst%2C_West_Sussex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-024',
@@ -242,6 +357,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.9,
     review_count: 3,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Garden_lawn_bench_Waterperry_Gardens_Oxfordshire_England.jpg/960px-Garden_lawn_bench_Waterperry_Gardens_Oxfordshire_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_01.jpg/960px-Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_02.jpg/960px-Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Garden_lawn_bench_Waterperry_Gardens_Oxfordshire_England.jpg/960px-Garden_lawn_bench_Waterperry_Gardens_Oxfordshire_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-025',
@@ -252,6 +372,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.6,
     review_count: 14,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Garden_urn_and_bench_Gibberd_Garden_Harlow_Essex_England_2025_06.jpg/960px-Garden_urn_and_bench_Gibberd_Garden_Harlow_Essex_England_2025_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Garden_urn_and_bench_Gibberd_Garden_Harlow_Essex_England_2025_06.jpg/960px-Garden_urn_and_bench_Gibberd_Garden_Harlow_Essex_England_2025_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Garden_wooden_bench_Heyrons_High_Easter_Essex_01.jpg/960px-Garden_wooden_bench_Heyrons_High_Easter_Essex_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Lawn_bench_Capel_Manor_College_Gardens_Enfield_London_England_01.jpg/960px-Lawn_bench_Capel_Manor_College_Gardens_Enfield_London_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-026',
@@ -262,6 +387,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.1,
     review_count: 24,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Garden_wooden_bench_Heyrons_High_Easter_Essex_01.jpg/960px-Garden_wooden_bench_Heyrons_High_Easter_Essex_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Lublin-UMCS-Botanical-Garden-bench-181012-1.jpg/960px-Lublin-UMCS-Botanical-Garden-bench-181012-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Lublin-UMCS-Botanical-Garden-bench-181012-2.jpg/960px-Lublin-UMCS-Botanical-Garden-bench-181012-2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Man_on_bench_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England.jpg/960px-Man_on_bench_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-027',
@@ -272,6 +402,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.3,
     review_count: 35,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Lawn_bench_Capel_Manor_College_Gardens_Enfield_London_England_01.jpg/960px-Lawn_bench_Capel_Manor_College_Gardens_Enfield_London_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Outdoor_wooden_bench_in_Singapore_Botanic_Gardens_at_golden_hour.jpg/960px-Outdoor_wooden_bench_in_Singapore_Botanic_Gardens_at_golden_hour.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Pembroke_Lodge_garden%2C_Daniel_Hearsum%27s_bench.jpg/960px-Pembroke_Lodge_garden%2C_Daniel_Hearsum%27s_bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Pembroke_Lodge_garden%2C_John_%27K_J%27_Sommerfeld%27s_bench.jpg/960px-Pembroke_Lodge_garden%2C_John_%27K_J%27_Sommerfeld%27s_bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-028',
@@ -282,6 +417,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.0,
     review_count: 8,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Lublin-UMCS-Botanical-Garden-bench-181012-1.jpg/960px-Lublin-UMCS-Botanical-Garden-bench-181012-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Rackets_Court_wooden_bench_in_Copped_Hall_Gardens%2C_Epping%2C_Essex%2C_England.jpg/960px-Rackets_Court_wooden_bench_in_Copped_Hall_Gardens%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Remembrance_bench_in_a_garden.jpg/960px-Remembrance_bench_in_a_garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Simpson_Garden_Benches_Close.jpg/960px-Simpson_Garden_Benches_Close.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-029',
@@ -292,6 +432,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.1,
     review_count: 24,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Lublin-UMCS-Botanical-Garden-bench-181012-2.jpg/960px-Lublin-UMCS-Botanical-Garden-bench-181012-2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Simpson_Garden_Park_Bench.jpg/960px-Simpson_Garden_Park_Bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Small_garden_and_wooden_bench_at_east_end_of_ground_floor_inside_The_Mall_Boronia_in_Boronia%2C_Melbourne.jpg/960px-Small_garden_and_wooden_bench_at_east_end_of_ground_floor_inside_The_Mall_Boronia_in_Boronia%2C_Melbourne.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/St_Alphage_Garden_02_-_benches_by_wall.jpg/960px-St_Alphage_Garden_02_-_benches_by_wall.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-030',
@@ -302,6 +447,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.3,
     review_count: 35,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Man_on_bench_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England.jpg/960px-Man_on_bench_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://upload.wikimedia.org/wikipedia/commons/4/49/Thorpe_Lodge_%28BandB%29_-_bench_and_gardens_-_geograph.org.uk_-_833902.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Upcycled_Outdoor_Garden_Bench_from_Reclaimed_Materials.jpg/960px-Upcycled_Outdoor_Garden_Bench_from_Reclaimed_Materials.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://upload.wikimedia.org/wikipedia/commons/a/a5/Wet_Bench%2C_Wallington_Walled_Garden_-_geograph.org.uk_-_976538.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    ],
   },
   {
     id: 'seed-031',
@@ -312,6 +462,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.0,
     review_count: 8,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Outdoor_wooden_bench_in_Singapore_Botanic_Gardens_at_golden_hour.jpg/960px-Outdoor_wooden_bench_in_Singapore_Botanic_Gardens_at_golden_hour.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/Wood_and_cast_iron_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg/960px-Wood_and_cast_iron_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Wooden_bench_inLady_Wraxall%27s_garden_-_geograph.org.uk_-_7071675.jpg/960px-Wooden_bench_inLady_Wraxall%27s_garden_-_geograph.org.uk_-_7071675.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Wooden_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg/960px-Wooden_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-032',
@@ -322,6 +477,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.1,
     review_count: 29,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Pembroke_Lodge_garden%2C_Daniel_Hearsum%27s_bench.jpg/960px-Pembroke_Lodge_garden%2C_Daniel_Hearsum%27s_bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Wooden_bench_in_Crickhowell_Library_Community_Garden_-_geograph.org.uk_-_6694244.jpg/960px-Wooden_bench_in_Crickhowell_Library_Community_Garden_-_geograph.org.uk_-_6694244.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/Wooden_bench_in_a_blooming_garden_%E2%80%93_Spring_in_Kuwait.jpg/960px-Wooden_bench_in_a_blooming_garden_%E2%80%93_Spring_in_Kuwait.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Wooden_garden_bench_and_trellises.jpg/960px-Wooden_garden_bench_and_trellises.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-033',
@@ -332,6 +492,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.8,
     review_count: 40,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Pembroke_Lodge_garden%2C_John_%27K_J%27_Sommerfeld%27s_bench.jpg/960px-Pembroke_Lodge_garden%2C_John_%27K_J%27_Sommerfeld%27s_bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/A_bench_in_Lewes_Castle_Gun_Garden.jpg/960px-A_bench_in_Lewes_Castle_Gun_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG/960px-A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg/960px-Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-034',
@@ -342,6 +507,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.5,
     review_count: 13,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Rackets_Court_wooden_bench_in_Copped_Hall_Gardens%2C_Epping%2C_Essex%2C_England.jpg/960px-Rackets_Court_wooden_bench_in_Copped_Hall_Gardens%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Bench_at_riverbanks_zoo_garden_5273.jpg/960px-Bench_at_riverbanks_zoo_garden_5273.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg/960px-Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg/960px-Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-035',
@@ -352,6 +522,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.0,
     review_count: 23,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Remembrance_bench_in_a_garden.jpg/960px-Remembrance_bench_in_a_garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg/960px-Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Carved_Poppies_on_wooden_bench_-_geograph.org.uk_-_7041428.jpg/960px-Carved_Poppies_on_wooden_bench_-_geograph.org.uk_-_7041428.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7041427.jpg/960px-Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7041427.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-036',
@@ -362,6 +537,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.2,
     review_count: 34,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Simpson_Garden_Benches_Close.jpg/960px-Simpson_Garden_Benches_Close.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7062505.jpg/960px-Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7062505.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Chirk_Castle_carved_into_the_wooden_bench_-_geograph.org.uk_-_7041429.jpg/960px-Chirk_Castle_carved_into_the_wooden_bench_-_geograph.org.uk_-_7041429.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://upload.wikimedia.org/wikipedia/commons/6/6f/Corner_bench_in_the_Urn_Garden_at_Chartwell_-_geograph.org.uk_-_1422229.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    ],
   },
   {
     id: 'seed-037',
@@ -372,6 +552,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.9,
     review_count: 7,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Simpson_Garden_Park_Bench.jpg/960px-Simpson_Garden_Park_Bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Covid-19_pandemic_Downhills_Park_Ornamental_Garden_bench_sign_Tottenham_London_1.jpg/960px-Covid-19_pandemic_Downhills_Park_Ornamental_Garden_bench_sign_Tottenham_London_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_01.jpg/960px-Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_02.jpg/960px-Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-038',
@@ -382,6 +567,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.2,
     review_count: 25,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Small_garden_and_wooden_bench_at_east_end_of_ground_floor_inside_The_Mall_Boronia_in_Boronia%2C_Melbourne.jpg/960px-Small_garden_and_wooden_bench_at_east_end_of_ground_floor_inside_The_Mall_Boronia_in_Boronia%2C_Melbourne.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Feeringbury_Manor_Thakeham_Bench_Lutyens_Bench%2C_Feering_Essex_England.jpg/960px-Feeringbury_Manor_Thakeham_Bench_Lutyens_Bench%2C_Feering_Essex_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Fern_on_a_wooden_bench_before_a_stone_wall%2C_Portland_Japanese_Garden.jpg/960px-Fern_on_a_wooden_bench_before_a_stone_wall%2C_Portland_Japanese_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_1.jpg/960px-Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-039',
@@ -392,6 +582,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.4,
     review_count: 36,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/St_Alphage_Garden_02_-_benches_by_wall.jpg/960px-St_Alphage_Garden_02_-_benches_by_wall.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_2.jpg/960px-Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Front_view_of_a_wooden_outdoor_bench_in_Singapore_Botanic_Gardens_with_plants_in_sunshine_and_blue_sky.jpg/960px-Front_view_of_a_wooden_outdoor_bench_in_Singapore_Botanic_Gardens_with_plants_in_sunshine_and_blue_sky.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Garden_bench_in_Nuthurst%2C_West_Sussex%2C_England_1.jpg/960px-Garden_bench_in_Nuthurst%2C_West_Sussex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-040',
@@ -402,6 +597,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.1,
     review_count: 9,
     cover_photo_url: "https://upload.wikimedia.org/wikipedia/commons/4/49/Thorpe_Lodge_%28BandB%29_-_bench_and_gardens_-_geograph.org.uk_-_833902.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_01.jpg/960px-Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_02.jpg/960px-Garden_bench_seat_Gibberd_Garden_Harlow_Essex_England_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Garden_lawn_bench_Waterperry_Gardens_Oxfordshire_England.jpg/960px-Garden_lawn_bench_Waterperry_Gardens_Oxfordshire_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-041',
@@ -412,6 +612,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.8,
     review_count: 21,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Upcycled_Outdoor_Garden_Bench_from_Reclaimed_Materials.jpg/960px-Upcycled_Outdoor_Garden_Bench_from_Reclaimed_Materials.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Garden_urn_and_bench_Gibberd_Garden_Harlow_Essex_England_2025_06.jpg/960px-Garden_urn_and_bench_Gibberd_Garden_Harlow_Essex_England_2025_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Garden_wooden_bench_Heyrons_High_Easter_Essex_01.jpg/960px-Garden_wooden_bench_Heyrons_High_Easter_Essex_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Lawn_bench_Capel_Manor_College_Gardens_Enfield_London_England_01.jpg/960px-Lawn_bench_Capel_Manor_College_Gardens_Enfield_London_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-042',
@@ -422,6 +627,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.0,
     review_count: 32,
     cover_photo_url: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Wet_Bench%2C_Wallington_Walled_Garden_-_geograph.org.uk_-_976538.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Lublin-UMCS-Botanical-Garden-bench-181012-1.jpg/960px-Lublin-UMCS-Botanical-Garden-bench-181012-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Lublin-UMCS-Botanical-Garden-bench-181012-2.jpg/960px-Lublin-UMCS-Botanical-Garden-bench-181012-2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Man_on_bench_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England.jpg/960px-Man_on_bench_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-043',
@@ -432,6 +642,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.7,
     review_count: 5,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/Wood_and_cast_iron_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg/960px-Wood_and_cast_iron_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Outdoor_wooden_bench_in_Singapore_Botanic_Gardens_at_golden_hour.jpg/960px-Outdoor_wooden_bench_in_Singapore_Botanic_Gardens_at_golden_hour.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Pembroke_Lodge_garden%2C_Daniel_Hearsum%27s_bench.jpg/960px-Pembroke_Lodge_garden%2C_Daniel_Hearsum%27s_bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Pembroke_Lodge_garden%2C_John_%27K_J%27_Sommerfeld%27s_bench.jpg/960px-Pembroke_Lodge_garden%2C_John_%27K_J%27_Sommerfeld%27s_bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-044',
@@ -442,6 +657,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.2,
     review_count: 25,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Wooden_bench_inLady_Wraxall%27s_garden_-_geograph.org.uk_-_7071675.jpg/960px-Wooden_bench_inLady_Wraxall%27s_garden_-_geograph.org.uk_-_7071675.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Rackets_Court_wooden_bench_in_Copped_Hall_Gardens%2C_Epping%2C_Essex%2C_England.jpg/960px-Rackets_Court_wooden_bench_in_Copped_Hall_Gardens%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Remembrance_bench_in_a_garden.jpg/960px-Remembrance_bench_in_a_garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Simpson_Garden_Benches_Close.jpg/960px-Simpson_Garden_Benches_Close.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-045',
@@ -452,6 +672,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.4,
     review_count: 36,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Wooden_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg/960px-Wooden_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Simpson_Garden_Park_Bench.jpg/960px-Simpson_Garden_Park_Bench.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Small_garden_and_wooden_bench_at_east_end_of_ground_floor_inside_The_Mall_Boronia_in_Boronia%2C_Melbourne.jpg/960px-Small_garden_and_wooden_bench_at_east_end_of_ground_floor_inside_The_Mall_Boronia_in_Boronia%2C_Melbourne.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/St_Alphage_Garden_02_-_benches_by_wall.jpg/960px-St_Alphage_Garden_02_-_benches_by_wall.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-046',
@@ -462,6 +687,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.1,
     review_count: 9,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Wooden_bench_in_Crickhowell_Library_Community_Garden_-_geograph.org.uk_-_6694244.jpg/960px-Wooden_bench_in_Crickhowell_Library_Community_Garden_-_geograph.org.uk_-_6694244.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://upload.wikimedia.org/wikipedia/commons/4/49/Thorpe_Lodge_%28BandB%29_-_bench_and_gardens_-_geograph.org.uk_-_833902.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Upcycled_Outdoor_Garden_Bench_from_Reclaimed_Materials.jpg/960px-Upcycled_Outdoor_Garden_Bench_from_Reclaimed_Materials.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://upload.wikimedia.org/wikipedia/commons/a/a5/Wet_Bench%2C_Wallington_Walled_Garden_-_geograph.org.uk_-_976538.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    ],
   },
   {
     id: 'seed-047',
@@ -472,6 +702,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.1,
     review_count: 29,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/Wooden_bench_in_a_blooming_garden_%E2%80%93_Spring_in_Kuwait.jpg/960px-Wooden_bench_in_a_blooming_garden_%E2%80%93_Spring_in_Kuwait.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/Wood_and_cast_iron_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg/960px-Wood_and_cast_iron_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Wooden_bench_inLady_Wraxall%27s_garden_-_geograph.org.uk_-_7071675.jpg/960px-Wooden_bench_inLady_Wraxall%27s_garden_-_geograph.org.uk_-_7071675.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Wooden_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg/960px-Wooden_bench_in_Copped_Hall_Kitchen_Garden%2C_Epping%2C_Essex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-048',
@@ -482,6 +717,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.8,
     review_count: 40,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Wooden_garden_bench_and_trellises.jpg/960px-Wooden_garden_bench_and_trellises.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Wooden_bench_in_Crickhowell_Library_Community_Garden_-_geograph.org.uk_-_6694244.jpg/960px-Wooden_bench_in_Crickhowell_Library_Community_Garden_-_geograph.org.uk_-_6694244.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/Wooden_bench_in_a_blooming_garden_%E2%80%93_Spring_in_Kuwait.jpg/960px-Wooden_bench_in_a_blooming_garden_%E2%80%93_Spring_in_Kuwait.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Wooden_garden_bench_and_trellises.jpg/960px-Wooden_garden_bench_and_trellises.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-049',
@@ -492,6 +732,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.5,
     review_count: 13,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/A_bench_in_Lewes_Castle_Gun_Garden.jpg/960px-A_bench_in_Lewes_Castle_Gun_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/A_bench_in_Lewes_Castle_Gun_Garden.jpg/960px-A_bench_in_Lewes_Castle_Gun_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG/960px-A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg/960px-Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-050',
@@ -502,6 +747,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.4,
     review_count: 27,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG/960px-A_lawn_and_garden_bench_at_Gibberd_Garden_Essex_England.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Bench_at_riverbanks_zoo_garden_5273.jpg/960px-Bench_at_riverbanks_zoo_garden_5273.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg/960px-Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg/960px-Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-051',
@@ -512,6 +762,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.6,
     review_count: 38,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg/960px-Beer_garden_bench_The_Cock_Inn_Henham_Essex_England_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg/960px-Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Carved_Poppies_on_wooden_bench_-_geograph.org.uk_-_7041428.jpg/960px-Carved_Poppies_on_wooden_bench_-_geograph.org.uk_-_7041428.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7041427.jpg/960px-Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7041427.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-052',
@@ -522,6 +777,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.3,
     review_count: 11,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Bench_at_riverbanks_zoo_garden_5273.jpg/960px-Bench_at_riverbanks_zoo_garden_5273.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7062505.jpg/960px-Carved_wooden_bench_at_Chirk_Castle_-_geograph.org.uk_-_7062505.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Chirk_Castle_carved_into_the_wooden_bench_-_geograph.org.uk_-_7041429.jpg/960px-Chirk_Castle_carved_into_the_wooden_bench_-_geograph.org.uk_-_7041429.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://upload.wikimedia.org/wikipedia/commons/6/6f/Corner_bench_in_the_Urn_Garden_at_Chartwell_-_geograph.org.uk_-_1422229.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    ],
   },
   {
     id: 'seed-053',
@@ -532,6 +792,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 9.2,
     review_count: 25,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg/960px-Bench_in_the_Old_Palace_Garden_Hatfield_House_Hertfordshire_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Covid-19_pandemic_Downhills_Park_Ornamental_Garden_bench_sign_Tottenham_London_1.jpg/960px-Covid-19_pandemic_Downhills_Park_Ornamental_Garden_bench_sign_Tottenham_London_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_01.jpg/960px-Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_02.jpg/960px-Easton_Lodge_Gardens_memorial_bench_WWII_air_crew_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-054',
@@ -542,6 +807,11 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 7.4,
     review_count: 36,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg/960px-Bench_on_southern_terrace%2C_Easton_Lodge_Gardens%2C_Little_Easton%2C_Essex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Feeringbury_Manor_Thakeham_Bench_Lutyens_Bench%2C_Feering_Essex_England.jpg/960px-Feeringbury_Manor_Thakeham_Bench_Lutyens_Bench%2C_Feering_Essex_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Fern_on_a_wooden_bench_before_a_stone_wall%2C_Portland_Japanese_Garden.jpg/960px-Fern_on_a_wooden_bench_before_a_stone_wall%2C_Portland_Japanese_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_1.jpg/960px-Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
   {
     id: 'seed-055',
@@ -552,5 +822,10 @@ export const WORLD_BENCHES: Bench[] = [
     avg_rating: 8.1,
     review_count: 9,
     cover_photo_url: "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg/960px-Bench_seat_in_Walled_Garden_Parham_House%2C_West_Sussex%2C_England.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    photos: [
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_2.jpg/960px-Formal_garden_benches_Harlow_Museum_%26_Walled_Gardens%2C_Essex_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Front_view_of_a_wooden_outdoor_bench_in_Singapore_Botanic_Gardens_with_plants_in_sunshine_and_blue_sky.jpg/960px-Front_view_of_a_wooden_outdoor_bench_in_Singapore_Botanic_Gardens_with_plants_in_sunshine_and_blue_sky.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Garden_bench_in_Nuthurst%2C_West_Sussex%2C_England_1.jpg/960px-Garden_bench_in_Nuthurst%2C_West_Sussex%2C_England_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    ],
   },
 ];

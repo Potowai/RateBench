@@ -22,8 +22,8 @@ export const AddBenchModal: React.FC<AddBenchModalProps> = ({
   const [title, setTitle] = useState('');
   const [rating, setRating] = useState<number>(8); // 1 à 10 (contrainte DB)
   const [comment, setComment] = useState('');
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoFiles, setPhotoFiles] = useState<File[]>([]);
+  const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
   const [latitude, setLatitude] = useState<number>(userLocation?.lat ?? 48.8566);
   const [longitude, setLongitude] = useState<number>(userLocation?.lng ?? 2.3522);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,17 +53,17 @@ export const AddBenchModal: React.FC<AddBenchModalProps> = ({
   if (!isOpen) return null;
 
   const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setPhotoFile(file);
-      setPhotoPreview(URL.createObjectURL(file));
+    const files = Array.from(e.target.files || []).slice(0, 5);
+    if (files.length) {
+      setPhotoFiles((prev) => [...prev, ...files].slice(0, 5));
+      setPhotoPreviews((prev) => [...prev, ...files.map((f) => URL.createObjectURL(f))].slice(0, 5));
     }
   };
 
-  const handleRemovePhoto = () => {
-    setPhotoFile(null);
-    if (photoPreview) URL.revokeObjectURL(photoPreview);
-    setPhotoPreview(null);
+  const handleRemovePhoto = (index: number) => {
+    URL.revokeObjectURL(photoPreviews[index]);
+    setPhotoFiles((prev) => prev.filter((_, i) => i !== index));
+    setPhotoPreviews((prev) => prev.filter((_, i) => i !== index));
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -80,10 +80,12 @@ export const AddBenchModal: React.FC<AddBenchModalProps> = ({
     setErrorMessage(null);
 
     try {
-      let photoUrl: string | null = null;
-      if (photoFile) {
-        photoUrl = await uploadBenchPhoto(photoFile, userId);
+      // Plusieurs photos du même banc (max 5), compressées puis téléversées.
+      const photoUrls: string[] = [];
+      for (const file of photoFiles) {
+        photoUrls.push(await uploadBenchPhoto(file, userId));
       }
+      const coverUrl = photoUrls[0] ?? null;
 
       // Schéma canonique (supabase/migrations/001_schema.sql) :
       // benches.author_id, benches.photo_url ; reviews.user_id, reviews.photo_url
@@ -94,12 +96,20 @@ export const AddBenchModal: React.FC<AddBenchModalProps> = ({
           latitude,
           longitude,
           author_id: userId || null,
-          photo_url: photoUrl ?? '',
+          photo_url: coverUrl ?? '',
         })
         .select('id')
         .single();
 
       if (benchError) throw benchError;
+
+      // Galerie : une ligne par photo supplémentaire (migration 007).
+      if (photoUrls.length > 1) {
+        const { error: galleryError } = await supabase.from('bench_photos').insert(
+          photoUrls.map((url, i) => ({ bench_id: benchData.id, photo_url: url, sort_order: i }))
+        );
+        if (galleryError) throw galleryError;
+      }
 
       const { error: reviewError } = await supabase
         .from('reviews')
@@ -108,7 +118,7 @@ export const AddBenchModal: React.FC<AddBenchModalProps> = ({
           user_id: userId || null,
           rating,
           comment: comment.trim() || null,
-          photo_url: photoUrl,
+          photo_url: coverUrl,
         });
 
       if (reviewError) throw reviewError;
@@ -176,30 +186,35 @@ export const AddBenchModal: React.FC<AddBenchModalProps> = ({
 
           <div>
             <span className="block text-xs font-medium text-slate-600 uppercase tracking-wider mb-2">
-              Photo du spot
+              Photos du spot <span className="normal-case text-slate-400">(jusqu'à 5)</span>
             </span>
-            {photoPreview ? (
-              <div className="relative rounded-2xl overflow-hidden aspect-video bg-slate-100 border border-slate-200 group">
-                <img src={photoPreview} alt="Aperçu du banc" className="w-full h-full object-cover" />
-                <button
-                  type="button"
-                  onClick={handleRemovePhoto}
-                  aria-label="Retirer la photo"
-                  className="absolute top-2 right-2 p-1.5 bg-slate-900/70 hover:bg-slate-900 text-white rounded-full transition"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+            {photoPreviews.length > 0 && (
+              <div className="grid grid-cols-3 gap-2 mb-2">
+                {photoPreviews.map((src, i) => (
+                  <div key={i} className="relative rounded-xl overflow-hidden aspect-square bg-slate-100 border border-slate-200">
+                    <img src={src} alt={`Aperçu ${i + 1}`} className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePhoto(i)}
+                      aria-label={`Retirer la photo ${i + 1}`}
+                      className="absolute top-1 right-1 p-1 bg-slate-900/70 hover:bg-slate-900 text-white rounded-full transition"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
               </div>
-            ) : (
+            )}
+            {photoPreviews.length < 5 && (
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-slate-200 hover:border-slate-400 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer bg-slate-50 hover:bg-slate-100/60 transition text-center w-full"
+                className="border-2 border-dashed border-slate-200 hover:border-slate-400 rounded-2xl p-5 flex flex-col items-center justify-center cursor-pointer bg-slate-50 hover:bg-slate-100/60 transition text-center w-full"
               >
-                <div className="w-12 h-12 rounded-full bg-slate-200/80 flex items-center justify-center text-slate-600 mb-2">
-                  <Camera className="w-6 h-6" aria-hidden="true" />
+                <div className="w-10 h-10 rounded-full bg-slate-200/80 flex items-center justify-center text-slate-600 mb-1.5">
+                  <Camera className="w-5 h-5" aria-hidden="true" />
                 </div>
-                <span className="text-sm font-medium text-slate-700">Prendre ou choisir une photo</span>
+                <span className="text-sm font-medium text-slate-700">Ajouter des photos</span>
                 <span className="text-xs text-slate-400 mt-0.5">Compression auto &lt; 300 Ko</span>
               </button>
             )}
@@ -207,7 +222,7 @@ export const AddBenchModal: React.FC<AddBenchModalProps> = ({
               type="file"
               ref={fileInputRef}
               accept="image/*"
-              capture="environment"
+              multiple
               onChange={handlePhotoSelect}
               aria-label="Photo du banc"
               className="hidden"

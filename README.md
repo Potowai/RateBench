@@ -38,7 +38,7 @@ Le projet est **open-source** : vous pouvez l'utiliser, l'étudier, le modifier 
 ## Fonctionnalités
 
 - 🗺️ **Carte plein écran** avec position GPS et recentrage (Leaflet / OpenStreetMap)
-- 📍 **Ajout de spots** : titre, description, position, note et photo (compressée côté client)
+- 📍 **Ajout de spots** : titre, description, position, note et **jusqu'à 5 photos** (compressées côté client)
 - ⭐ **Avis notés de 1 à 10**, avec photo optionnelle et moyenne recalculée automatiquement
 - 🔐 **Comptes Supabase** (inscription automatique au premier login) ; lecture publique et écriture avec compte
 - 👤 **Pseudonyme anonyme** conservé localement pour les publications sans compte (application Android)
@@ -70,7 +70,10 @@ et **reste du monde (15)** (Londres, Central Park, Kyoto, Vancouver, Sydney).
 Sources des données (voir `pwa/src/data/benches.ts` et la migration `006`) :
 - **Coordonnées réelles** : nœuds `amenity=bench` extraits d'**OpenStreetMap** via l'API officielle.
 - **Photos réelles** : images de bancs sous licence libre issues de **Wikimedia Commons**.
-- **Notes et compteurs d'avis** : valeurs de démonstration (à remplacer par les vraies données
+- **Plusieurs photos par banc** : **3 photos réelles** par banc (galerie swipeable, visionneuse plein écran).
+- **Avis** : **74 avis de démonstration**, **au moins un avis pour chaque banc**, avec note, auteur,
+  commentaire et photo. Ajoutés localement en mode démo, persistés dans Supabase en mode cloud.
+- **Notes et compteurs** : valeurs de démonstration (à remplacer par les vraies données
   de la communauté quand le backend Supabase sera connecté).
 
 Elle sert le contenu de `pwa/dist` via Caddy. Pour la mettre à jour après un changement :
@@ -155,6 +158,7 @@ Le schéma et les migrations sont dans `supabase/migrations/` :
 | `004_seed_world.sql` | Bancs complémentaires (monde) |
 | `005_pwa_view.sql` | Vue `benches_with_stats` partagée par la PWA et l'Android |
 | `006_seed_real_benches.sql` | 55 bancs réels (OSM + Wikimedia Commons), France / NZ / monde |
+| `007_bench_photos_and_reviews.sql` | Table `bench_photos` (galerie multi-photos) + au moins un avis par banc |
 
 Voir [`supabase/README.md`](supabase/README.md) pour la procédure complète de création du projet et d'application des migrations.
 

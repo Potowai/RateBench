@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Star, X, MapPin, Navigation, MessageSquare, Plus, Loader2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Star, X, MapPin, Navigation, MessageSquare, Plus, Loader2, Images } from 'lucide-react';
 import { Bench, Review, UserLocation } from '../types';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { DEMO_REVIEWS } from '../data/reviews';
 import { calculateDistanceMeters, formatDistance } from '../lib/geo';
 
 interface BenchDetailsSheetProps {
@@ -26,12 +27,17 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
   const [newComment, setNewComment] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
   const [reviewError, setReviewError] = useState<string | null>(null);
+  const [activePhoto, setActivePhoto] = useState(0);
+  const [lightbox, setLightbox] = useState<string | null>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (bench) {
       fetchReviews(bench.id);
       setIsAddingReview(false);
       setReviewError(null);
+      setActivePhoto(0);
+      setLightbox(null);
     }
   }, [bench]);
 
@@ -45,7 +51,14 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [bench, onClose]);
 
+  const demoFor = (benchId: string) => DEMO_REVIEWS.filter((r) => r.bench_id === benchId);
+
   const fetchReviews = async (benchId: string) => {
+    // Sans backend, on affiche directement les avis de démonstration (au moins un par banc).
+    if (!isSupabaseConfigured) {
+      setReviews(demoFor(benchId));
+      return;
+    }
     setLoadingReviews(true);
     try {
       const { data, error } = await supabase
@@ -55,9 +68,12 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setReviews(data || []);
+      // Repli sur les avis de démo si le banc n'a pas encore d'avis réel.
+      const found = data || [];
+      setReviews(found.length ? found : demoFor(benchId));
     } catch (err) {
       console.error('Erreur récupération avis:', err);
+      setReviews(demoFor(benchId));
     } finally {
       setLoadingReviews(false);
     }
@@ -67,6 +83,25 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
     e.preventDefault();
     if (!bench) return;
     setSubmittingReview(true);
+
+    // Mode démo : l'avis est ajouté localement (aucun backend configuré).
+    if (!isSupabaseConfigured) {
+      setReviews((prev) => [
+        {
+          id: `local-${Date.now()}`,
+          bench_id: bench.id,
+          user_name: 'Vous',
+          rating: newRating,
+          comment: newComment.trim() || null,
+          created_at: new Date().toISOString(),
+        },
+        ...prev,
+      ]);
+      setNewComment('');
+      setIsAddingReview(false);
+      setSubmittingReview(false);
+      return;
+    }
 
     try {
       const { error } = await supabase.from('reviews').insert({
@@ -95,6 +130,7 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
   const distance = userLocation
     ? calculateDistanceMeters(userLocation.lat, userLocation.lng, bench.latitude, bench.longitude)
     : null;
+  const photos = bench.photos?.length ? bench.photos : (bench.cover_photo_url ? [bench.cover_photo_url] : []);
 
   return (
     <div
@@ -114,14 +150,50 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
           <div className="w-12 h-1.5 bg-slate-300 rounded-full"></div>
         </div>
 
-        {/* Photo grand format en tête */}
+        {/* Galerie : plusieurs photos du même banc */}
         <div className="relative w-full h-52 sm:h-64 bg-slate-100 flex-shrink-0">
-          {bench.cover_photo_url ? (
-            <img
-              src={bench.cover_photo_url}
-              alt={bench.title || 'Banc public'}
-              className="w-full h-full object-cover"
-            />
+          {photos.length > 0 ? (
+            <>
+              <div
+                ref={galleryRef}
+                className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scroll-smooth"
+                style={{ scrollbarWidth: 'none' }}
+                onScroll={(e) => {
+                  const el = e.currentTarget;
+                  setActivePhoto(Math.round(el.scrollLeft / el.clientWidth));
+                }}
+              >
+                {photos.map((url, i) => (
+                  <img
+                    key={i}
+                    src={url}
+                    alt={`${bench.title || 'Banc public'} — photo ${i + 1}/${photos.length}`}
+                    onClick={() => setLightbox(url)}
+                    className="w-full h-full object-cover snap-center flex-shrink-0 cursor-zoom-in"
+                  />
+                ))}
+              </div>
+
+              {/* Compteur + pastilles de navigation */}
+              <div className="absolute top-3 left-3 bg-slate-900/70 text-white text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1.5 backdrop-blur-sm">
+                <Images className="w-3.5 h-3.5" aria-hidden="true" />
+                {activePhoto + 1} / {photos.length}
+              </div>
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                {photos.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    aria-label={`Voir la photo ${i + 1}`}
+                    onClick={() => {
+                      galleryRef.current?.scrollTo({ left: i * galleryRef.current.clientWidth, behavior: 'smooth' });
+                      setActivePhoto(i);
+                    }}
+                    className={`w-1.5 h-1.5 rounded-full transition ${i === activePhoto ? 'bg-white w-4' : 'bg-white/50'}`}
+                  />
+                ))}
+              </div>
+            </>
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 bg-slate-100">
               <MapPin className="w-10 h-10 stroke-1 mb-1 text-slate-300" />
@@ -265,15 +337,28 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
                 {reviews.map((rev) => (
                   <div key={rev.id} className="p-3 bg-slate-50 rounded-xl border border-slate-100">
                     <div className="flex items-center justify-between mb-1">
-                      <div className="flex items-center gap-1 text-xs font-semibold text-slate-800">
-                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                        <span>{rev.rating}/10</span>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 text-xs font-semibold text-slate-800">
+                          <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                          <span>{rev.rating}/10</span>
+                        </div>
+                        {rev.user_name && (
+                          <span className="text-[11px] text-slate-500">par {rev.user_name}</span>
+                        )}
                       </div>
                       <span className="text-[10px] text-slate-400">
                         {new Date(rev.created_at).toLocaleDateString('fr-FR')}
                       </span>
                     </div>
                     {rev.comment && <p className="text-xs text-slate-600 mt-1">{rev.comment}</p>}
+                    {rev.photo_url && (
+                      <img
+                        src={rev.photo_url}
+                        alt="Photo jointe à l'avis"
+                        onClick={() => setLightbox(rev.photo_url!)}
+                        className="mt-2 w-full h-28 object-cover rounded-lg cursor-zoom-in"
+                      />
+                    )}
                   </div>
                 ))}
               </div>
@@ -281,6 +366,31 @@ export const BenchDetailsSheet: React.FC<BenchDetailsSheetProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Visionneuse plein écran */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-[60] bg-slate-950/95 flex items-center justify-center p-4"
+          onClick={() => setLightbox(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Photo en grand"
+        >
+          <img
+            src={lightbox}
+            alt="Photo du banc en grand"
+            className="max-w-full max-h-full object-contain rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            onClick={() => setLightbox(null)}
+            aria-label="Fermer la photo"
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
