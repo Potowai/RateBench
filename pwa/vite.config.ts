@@ -41,9 +41,9 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
         runtimeCaching: [
           {
-            // Cache des tuiles CartoDB (fournisseur réellement utilisé par BenchMap)
+            // Cache des tuiles OpenStreetMap (fournisseur utilisé par BenchMap)
             // pour une consultation hors-ligne des zones déjà visitées.
-            urlPattern: /^https:\/\/[a-d]\.basemaps\.cartocdn\.com\/.*/i,
+            urlPattern: /^https:\/\/tile\.openstreetmap\.org\/.*/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'ratebench-tiles-cache',
