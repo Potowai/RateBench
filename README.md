@@ -38,6 +38,8 @@ Le projet est **open-source** : vous pouvez l'utiliser, l'étudier, le modifier 
 ## Fonctionnalités
 
 - 🗺️ **Carte plein écran** avec position GPS et recentrage (Leaflet / OpenStreetMap)
+- 🔢 **Regroupement des bancs** : quand on dézoome, les bancs proches forment une pastille
+  indiquant **leur nombre** ; un clic dessus zoome et les sépare (spiderfy au zoom max)
 - 📍 **Ajout de spots** : titre, description, position, note et **jusqu'à 5 photos** (compressées côté client)
 - ⭐ **Avis notés de 1 à 10**, avec photo optionnelle et moyenne recalculée automatiquement
 - 🔐 **Comptes Supabase** (inscription automatique au premier login) ; lecture publique et écriture avec compte

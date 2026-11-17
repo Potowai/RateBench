@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-cluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
 import L from 'leaflet';
 import { Bench, UserLocation } from '../types';
 
@@ -67,6 +69,17 @@ function createUserLocationIcon() {
   });
 }
 
+// Pastille de regroupement : affiche le nombre de bancs du cercle.
+function createClusterIcon(cluster: { getChildCount: () => number }) {
+  const count = cluster.getChildCount();
+  const size = count < 5 ? 38 : count < 15 ? 46 : 54;
+  return L.divIcon({
+    html: `<div class="rb-cluster" style="width:${size}px;height:${size}px"><span>${count}</span></div>`,
+    className: 'rb-cluster-icon',
+    iconSize: L.point(size, size),
+  });
+}
+
 export const BenchMap: React.FC<BenchMapProps> = ({
   benches,
   userLocation,
@@ -105,20 +118,28 @@ export const BenchMap: React.FC<BenchMapProps> = ({
           />
         )}
 
-        {/* Marqueurs des bancs */}
-        {benches.map((bench) => {
-          const isSelected = selectedBench?.id === bench.id;
-          return (
-            <Marker
-              key={bench.id}
-              position={[bench.latitude, bench.longitude]}
-              icon={createBenchIcon(bench.avg_rating, isSelected)}
-              eventHandlers={{
-                click: () => onSelectBench(bench),
-              }}
-            />
-          );
-        })}
+        {/* Marqueurs des bancs, regroupés par cercle quand on dézoome */}
+        <MarkerClusterGroup
+          chunkedLoading
+          showCoverageOnHover={false}
+          maxClusterRadius={55}
+          spiderfyOnMaxZoom
+          iconCreateFunction={createClusterIcon}
+        >
+          {benches.map((bench) => {
+            const isSelected = selectedBench?.id === bench.id;
+            return (
+              <Marker
+                key={bench.id}
+                position={[bench.latitude, bench.longitude]}
+                icon={createBenchIcon(bench.avg_rating, isSelected)}
+                eventHandlers={{
+                  click: () => onSelectBench(bench),
+                }}
+              />
+            );
+          })}
+        </MarkerClusterGroup>
       </MapContainer>
     </div>
   );

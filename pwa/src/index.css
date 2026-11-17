@@ -22,3 +22,41 @@ html, body, #root {
   background: transparent;
   border: none;
 }
+
+/* Pastilles de regroupement : nombre de bancs dans le cercle */
+.rb-cluster-icon {
+  background: transparent;
+  border: none;
+}
+
+.rb-cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #0f172a;
+  color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.rb-cluster::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  width: 8px;
+  height: 8px;
+  background: #0f172a;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(45deg);
+  border-radius: 0 0 2px 0;
+}
+
+.rb-cluster span {
+  position: relative;
+  z-index: 1;
+}
